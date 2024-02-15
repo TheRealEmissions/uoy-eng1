@@ -14,6 +14,10 @@ public class Generic<T> {
         return u;
     }
 
+    public <U extends String> U test3(U u) {
+        return (U) u.toUpperCase();
+    }
+
     public static void testGeneric() {
         Generic<String> generic = new Generic<>();
         System.out.println(generic.test("Hello world!"));
@@ -21,5 +25,6 @@ public class Generic<T> {
         Generic<Integer> generic2 = new Generic<>();
         System.out.println(generic2.test(5)); // requires integer input
         System.out.println(generic2.test2("hi")); // can be any input as the generic is defined on the method
+        System.out.println(generic2.test3("hi")); // requires string input
     }
 }
