@@ -35,10 +35,27 @@ java {
     }
 }
 
+// configure jar
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "uk.ac.york.student.Main"
+    }
+    from(sourceSets.main.get().output)
+}
+
 tasks.withType(JavaCompile::class).configureEach {
     options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible) {
         options.release = targetJavaVersion
+    }
+}
+
+sourceSets.main {
+    java {
+        srcDir("src/main/java")
+    }
+    resources {
+        srcDir("src/main/resources")
     }
 }
 
