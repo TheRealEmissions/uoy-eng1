@@ -1,0 +1,50 @@
+@startgantt
+Project starts 2024-02-15
+
+' Days of Practicals
+2024-02-15 is colored in lightblue
+2024-02-22 is colored in lightblue
+2024-02-29 is colored in lightblue
+2024-03-07 is colored in lightblue
+2024-03-14 is colored in lightblue
+2024-03-21 is colored in lightblue
+
+--Requirements Gathering--
+[Review brief] requires 2 days and is colored in sandybrown/black
+then [Research] requires 5 days and is colored in sandybrown/black
+then [Draft potential questions] on {Lucy,Tim,Zac,Aaliya} requires 5 days and is colored in sandybrown/black
+
+[Customer Meeting] happens at [Draft potential questions]'s end and is colored in sandybrown/black
+then [Write up Requirements] requires 3 days and is colored in sandybrown/black and is 0% complete
+[Write up Requirements] is 20% complete
+
+--Design--
+[Design Architecture] starts at 2024-02-27 and requires 7 days and is colored in yellowgreen/black
+[Design Architecture] is 0% complete
+[Risk Assessment] starts at 2024-02-29 and requires 5 days and is colored in yellowgreen/black
+[Risk Assessment] is 30% complete
+[Design Map] starts at 2024-02-27 and requires 2 days and is colored in yellowgreen/black
+[Design Map] is 0% complete
+then [Design Characters] requires 3 days and is colored in yellowgreen/black
+[Design Characters] is 0% complete
+
+--Implementation--
+[Basic movement] requires 5 days and starts at 2024-02-29 and is colored in pink/black
+[Basic movement] is 0% complete
+then [Places Functionality] requires 3 days and is colored in pink/black
+[Places Functionality] is 0% complete
+then [Day Timer] requires 3 days and is colored in pink/black
+[Day Timer] is 0% complete
+then [Activity Tracker] requires 3 days and is colored in pink/black
+[Activity Tracker] is 0% complete
+then [Testing] happens at [Activity Tracker]'s end and is colored in pink/black
+then [Refactor] requires 4 days and is colored in pink/black
+[Refactor] is 0% complete
+then [Final Testing] happens at [Refactor]'s end and is colored in pink/black
+[Final Testing] is 0% complete
+
+[Report Writeup] requires 6 days and starts at 2024-03-14 and is colored in tan/black
+[Report Writeup] is 0% complete
+then [Website] happens at [Report Writeup]'s end and is colored in tan/black
+[Project Due] happens at 2024-03-21
+@endgantt
