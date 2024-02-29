@@ -12,21 +12,23 @@ Project starts 2024-02-15
 --Requirements Gathering--
 [Review brief] requires 2 days and is colored in sandybrown/black
 then [Research] requires 5 days and is colored in sandybrown/black
-then [Draft potential questions] on {Lucy,Tim,Zac,Aaliya} requires 5 days and is colored in sandybrown/black
+then [Draft potential questions] on {Lucy}{Tim}{Zac}{Lia} requires 28 days and is colored in sandybrown/black
 
-[Customer Meeting] happens at [Draft potential questions]'s end and is colored in sandybrown/black
-then [Write up Requirements] requires 3 days and is colored in sandybrown/black and is 0% complete
+[Customer Meeting] on {Lucy}{Tim}{Sammy}{Zac} happens at [Draft potential questions]'s end and is colored in sandybrown/black
+then [Write up Requirements] on {Lucy}{Zac}{Lia} requires 21 days and is colored in sandybrown/black and is 0% complete
 [Write up Requirements] is 20% complete
 
 --Design--
-[Design Architecture] starts at 2024-02-27 and requires 7 days and is colored in yellowgreen/black
+[Design Architecture] on {Liam}{Lia}{Kai}{Sammy} starts at 2024-02-29 and requires 28 days and is colored in yellowgreen/black
 [Design Architecture] is 0% complete
-[Risk Assessment] starts at 2024-02-29 and requires 5 days and is colored in yellowgreen/black
+[Risk Assessment] on {Kai}{Zac} starts at 2024-02-29 and requires 14 days and is colored in yellowgreen/black
 [Risk Assessment] is 30% complete
-[Design Map] starts at 2024-02-27 and requires 2 days and is colored in yellowgreen/black
+[Design Map] on {Lia} starts at 2024-02-29 and requires 3 days and is colored in yellowgreen/black
 [Design Map] is 0% complete
-then [Design Characters] requires 3 days and is colored in yellowgreen/black
+then [Design Characters] on {Lia} requires 4 days and is colored in yellowgreen/black
 [Design Characters] is 0% complete
+[Method Selection] on {Tim}{Sammy} starts at 2024-02-29 and requires 14 days and is colored in yellowgreen/black
+[Method Selection] is 10% complete
 
 --Implementation--
 [Basic movement] requires 5 days and starts at 2024-02-29 and is colored in pink/black
