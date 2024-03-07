@@ -4,12 +4,15 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import uk.ac.york.student.music.MusicManager;
 
-public class GdxGame extends ApplicationAdapter {
+public final class GdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
+		MusicManager.onEnable();
 	}
+
 
 	@Override
 	public void render() {
@@ -18,5 +21,6 @@ public class GdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void dispose() {
+		MusicManager.onDisable();
 	}
 }
