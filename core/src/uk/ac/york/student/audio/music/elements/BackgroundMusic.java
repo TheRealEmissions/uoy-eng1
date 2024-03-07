@@ -21,7 +21,7 @@ public class BackgroundMusic extends GameMusic implements Music {
      * Creates a new background music with the given path
      * @param path The path to the music file (in assets folder)
      */
-    public BackgroundMusic(String path) {
+    public BackgroundMusic(final String path) {
         super(path);
     }
 }

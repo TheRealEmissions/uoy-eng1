@@ -10,10 +10,10 @@ public final class GdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		AudioManager musicManager = MusicManager.getInstance();
+		final AudioManager musicManager = MusicManager.getInstance();
 		musicManager.onEnable();
 
-		AudioManager soundManager = SoundManager.getInstance();
+		final AudioManager soundManager = SoundManager.getInstance();
 		soundManager.onEnable();
 	}
 
@@ -25,10 +25,10 @@ public final class GdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void dispose() {
-		AudioManager musicManager = MusicManager.getInstance();
+		final AudioManager musicManager = MusicManager.getInstance();
 		musicManager.onDisable();
 
-		AudioManager soundManager = SoundManager.getInstance();
+		final AudioManager soundManager = SoundManager.getInstance();
 		soundManager.onDisable();
 	}
 }

@@ -15,7 +15,7 @@ public abstract class GameMusic implements Music {
      * Creates a new GameMusic with the given path
      * @param path The path to the music file (in assets folder)
      */
-    protected GameMusic(String path)  {
+    protected GameMusic(final String path)  {
         music = Gdx.audio.newMusic(Gdx.files.internal(path));
     }
 
@@ -58,7 +58,7 @@ public abstract class GameMusic implements Music {
      * @param isLooping whether to loop the stream
      */
     @Override
-    public void setLooping(boolean isLooping) {
+    public void setLooping(final boolean isLooping) {
         music.setLooping(isLooping);
     }
 
@@ -76,7 +76,7 @@ public abstract class GameMusic implements Music {
      * @param volume The volume in range [0.0, 1.0]
      */
     @Override
-    public void setVolume(float volume) {
+    public void setVolume(final float volume) {
         music.setVolume(volume);
     }
 
@@ -95,7 +95,7 @@ public abstract class GameMusic implements Music {
      * @param volume the volume in the range [0,1].
      */
     @Override
-    public void setPan(float pan, float volume) {
+    public void setPan(final float pan, final float volume) {
         music.setPan(pan, volume);
     }
 
@@ -104,7 +104,7 @@ public abstract class GameMusic implements Music {
      * @param position the position in seconds
      */
     @Override
-    public void setPosition(float position) {
+    public void setPosition(final float position) {
         music.setPosition(position);
     }
 
@@ -131,7 +131,7 @@ public abstract class GameMusic implements Music {
      * @param listener the callback that will be run.
      */
     @Override
-    public void setOnCompletionListener(OnCompletionListener listener) {
+    public void setOnCompletionListener(final OnCompletionListener listener) {
         music.setOnCompletionListener(listener);
     }
 }

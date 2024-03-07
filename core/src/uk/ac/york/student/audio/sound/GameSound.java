@@ -16,7 +16,7 @@ public abstract class GameSound implements Sound {
      * Creates a new GameSound with the given path
      * @param path The path to the sound file (in assets folder)
      */
-    protected GameSound(String path) {
+    protected GameSound(final String path) {
         sound = Gdx.audio.newSound(Gdx.files.internal(path));
     }
 
@@ -35,7 +35,7 @@ public abstract class GameSound implements Sound {
      * @return The sound id
      */
     @Override
-    public long play(float volume) {
+    public long play(final float volume) {
         return sound.play(volume);
     }
 
@@ -47,7 +47,7 @@ public abstract class GameSound implements Sound {
      * @return The sound id
      */
     @Override
-    public long play(float volume, float pitch, float pan) {
+    public long play(final float volume, final float pitch, final float pan) {
         return sound.play(volume, pitch, pan);
     }
 
@@ -66,7 +66,7 @@ public abstract class GameSound implements Sound {
      * @return The sound id
      */
     @Override
-    public long loop(float volume) {
+    public long loop(final float volume) {
         return sound.loop(volume);
     }
 
@@ -78,7 +78,7 @@ public abstract class GameSound implements Sound {
      * @return The sound id
      */
     @Override
-    public long loop(float volume, float pitch, float pan) {
+    public long loop(final float volume, final float pitch, final float pan) {
         return sound.loop(volume, pitch, pan);
     }
 
@@ -120,7 +120,7 @@ public abstract class GameSound implements Sound {
      * @param looping Whether the sound should loop
      */
     @Override
-    public void setLooping(long soundId, boolean looping) {
+    public void setLooping(final long soundId, final boolean looping) {
         sound.setLooping(soundId, looping);
     }
 
@@ -130,7 +130,7 @@ public abstract class GameSound implements Sound {
      * @param pitch The pitch to set the sound to
      */
     @Override
-    public void setPitch(long soundId, float pitch) {
+    public void setPitch(final long soundId, final float pitch) {
         sound.setPitch(soundId, pitch);
     }
 
@@ -140,7 +140,7 @@ public abstract class GameSound implements Sound {
      * @param volume The volume to set the sound to
      */
     @Override
-    public void setVolume(long soundId, float volume) {
+    public void setVolume(final long soundId, final float volume) {
         sound.setVolume(soundId, volume);
     }
 
@@ -151,7 +151,7 @@ public abstract class GameSound implements Sound {
      * @param volume The volume to set the sound to
      */
     @Override
-    public void setPan(long soundId, float pan, float volume) {
+    public void setPan(final long soundId, final float pan, final float volume) {
         sound.setPan(soundId, pan, volume);
     }
 }
