@@ -1,33 +1,24 @@
-package uk.ac.york.student.music;
+package uk.ac.york.student.audio.music;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import lombok.Getter;
 
 /**
- * The background music for the game
+ * Base class for game music
  */
 @Getter
-public class BackgroundMusic implements Music {
-    /**
-     * The music for the game
-     */
-    private final Music music;
+public abstract class GameMusic implements Music {
+    protected final Music music;
 
     /**
-     * Creates a new background music with the default path
-     */
-    public BackgroundMusic() {
-        this("music/background.mp3");
-    }
-
-    /**
-     * Creates a new background music with the given path
+     * Creates a new GameMusic with the given path
      * @param path The path to the music file (in assets folder)
      */
-    public BackgroundMusic(String path) {
+    protected GameMusic(String path)  {
         music = Gdx.audio.newMusic(Gdx.files.internal(path));
     }
+
 
     /**
      * Plays the music
