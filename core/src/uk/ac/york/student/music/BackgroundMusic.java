@@ -18,7 +18,7 @@ public class BackgroundMusic implements Music {
      * Creates a new background music with the default path
      */
     public BackgroundMusic() {
-        this("sounds/background.mp3");
+        this("music/background.mp3");
     }
 
     /**
