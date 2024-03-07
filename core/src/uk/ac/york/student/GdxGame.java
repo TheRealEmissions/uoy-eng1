@@ -1,16 +1,20 @@
 package uk.ac.york.student;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import uk.ac.york.student.music.MusicManager;
+import uk.ac.york.student.audio.AudioManager;
+import uk.ac.york.student.audio.music.MusicManager;
+import uk.ac.york.student.audio.sound.SoundManager;
 
 public final class GdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		MusicManager.onEnable();
+		AudioManager musicManager = MusicManager.getInstance();
+		musicManager.onEnable();
+
+		AudioManager soundManager = SoundManager.getInstance();
+		soundManager.onEnable();
 	}
 
 
@@ -21,6 +25,10 @@ public final class GdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void dispose() {
-		MusicManager.onDisable();
+		AudioManager musicManager = MusicManager.getInstance();
+		musicManager.onDisable();
+
+		AudioManager soundManager = SoundManager.getInstance();
+		soundManager.onDisable();
 	}
 }
