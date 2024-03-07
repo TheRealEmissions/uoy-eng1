@@ -7,4 +7,5 @@ to be updated
 - [Liam](https://github.com/TheRealEmissions)
 - [Lucy](https://github.com/lc2353)
 - [Tim](https://github.com/tgorst)
+- [Sammy](https://github.com/sammyhori)
 *please add yourself*
