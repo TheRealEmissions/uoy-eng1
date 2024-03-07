@@ -112,3 +112,18 @@ Thumbs.db
 /ios/xcode/native/
 /ios/IOSLauncher.app
 /ios/IOSLauncher.app.dSYM
+
+## IntelliJ
+/out/
+/android/out/
+/core/out/
+/desktop/out/
+/html/out/
+/ios/out/
+/.idea/
+/.idea_modules/
+/*.iml
+/*.ipr
+/*.iws
+/*.swp
+*.jar
