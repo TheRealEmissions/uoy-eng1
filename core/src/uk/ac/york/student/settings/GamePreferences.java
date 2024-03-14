@@ -24,6 +24,7 @@ public enum GamePreferences {
     private static final String NAME = "settings";
 
     public interface Preference {
+        String getKey(String key);
     }
 
     public static class DebugScreenPreferences implements Preference {
@@ -31,17 +32,22 @@ public enum GamePreferences {
         private static final boolean DEFAULT_ENABLED = false;
 
         public DebugScreenPreferences() {
-            GamePreferences.getPreferences().putBoolean(ENABLED, DEFAULT_ENABLED);
+            GamePreferences.getPreferences().putBoolean(getKey(ENABLED), DEFAULT_ENABLED);
             GamePreferences.getPreferences().flush();
         }
 
         public boolean isEnabled() {
-            return GamePreferences.getPreferences().getBoolean(ENABLED);
+            return GamePreferences.getPreferences().getBoolean(getKey(ENABLED));
         }
 
         public void setEnabled(boolean b) {
-            GamePreferences.getPreferences().putBoolean(ENABLED, b);
+            GamePreferences.getPreferences().putBoolean(getKey(ENABLED), b);
             GamePreferences.getPreferences().flush();
+        }
+
+        @Override
+        public String getKey(String key) {
+            return "debug_screen." + key;
         }
     }
 
@@ -53,27 +59,32 @@ public enum GamePreferences {
         private static final float DEFAULT_VOLUME = 0.5f;
 
         public MusicPreferences() {
-            GamePreferences.getPreferences().putBoolean(ENABLED, DEFAULT_ENABLED);
-            GamePreferences.getPreferences().putFloat(VOLUME, DEFAULT_VOLUME);
+            GamePreferences.getPreferences().putBoolean(getKey(ENABLED), DEFAULT_ENABLED);
+            GamePreferences.getPreferences().putFloat(getKey(VOLUME), DEFAULT_VOLUME);
             GamePreferences.getPreferences().flush();
         }
 
         public boolean isEnabled() {
-            return GamePreferences.getPreferences().getBoolean(ENABLED);
+            return GamePreferences.getPreferences().getBoolean(getKey(ENABLED));
         }
 
         public void setEnabled(boolean b) {
-            GamePreferences.getPreferences().putBoolean(ENABLED, b);
+            GamePreferences.getPreferences().putBoolean(getKey(ENABLED), b);
             GamePreferences.getPreferences().flush();
         }
 
         public float getVolume() {
-            return GamePreferences.getPreferences().getFloat(VOLUME);
+            return GamePreferences.getPreferences().getFloat(getKey(VOLUME));
         }
 
         public void setVolume(float vol) {
-            GamePreferences.getPreferences().putFloat(VOLUME, vol);
+            GamePreferences.getPreferences().putFloat(getKey(VOLUME), vol);
             GamePreferences.getPreferences().flush();
+        }
+
+        @Override
+        public String getKey(String key) {
+            return "music." + key;
         }
     }
 
@@ -83,17 +94,22 @@ public enum GamePreferences {
         private static final boolean DEFAULT_ENABLED = true;
 
         public SoundPreferences() {
-            GamePreferences.getPreferences().putBoolean(ENABLED, DEFAULT_ENABLED);
+            GamePreferences.getPreferences().putBoolean(getKey(ENABLED), DEFAULT_ENABLED);
             GamePreferences.getPreferences().flush();
         }
 
         public boolean isEnabled() {
-            return GamePreferences.getPreferences().getBoolean(ENABLED);
+            return GamePreferences.getPreferences().getBoolean(getKey(ENABLED));
         }
 
         public void setEnabled(boolean b) {
-            GamePreferences.getPreferences().putBoolean(ENABLED, b);
+            GamePreferences.getPreferences().putBoolean(getKey(ENABLED), b);
             GamePreferences.getPreferences().flush();
+        }
+
+        @Override
+        public String getKey(String key) {
+            return "sound." + key;
         }
     }
 
