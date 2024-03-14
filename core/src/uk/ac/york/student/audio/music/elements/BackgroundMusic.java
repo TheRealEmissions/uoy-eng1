@@ -14,7 +14,7 @@ public class BackgroundMusic extends GameMusic implements Music {
      * Creates a new background music with the default path
      */
     public BackgroundMusic() {
-        super("music/background.mp3");
+        super("audio/music/background.mp3");
     }
 
     /**
