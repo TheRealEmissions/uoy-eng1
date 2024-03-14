@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.york.student.GdxGame;
 import uk.ac.york.student.assets.skins.SkinManager;
@@ -23,7 +24,10 @@ import uk.ac.york.student.settings.GamePreferences;
 import java.util.function.Supplier;
 
 public class PreferencesScreen extends GenericScreen {
+    @Getter
     private final Stage processor;
+    private final ScreenData screenData = new ScreenData();
+    private final Table table = new Table();
     private final GameSound buttonClick = SoundManager.getSupplierSounds().getResult(Sounds.BUTTON_CLICK);
     private final Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
     private final Texture stoneWallTexture = new Texture(Gdx.files.internal("images/StoneWall.png"));
@@ -34,7 +38,10 @@ public class PreferencesScreen extends GenericScreen {
         MUSIC_VOLUME("Music Volume {0}"),
         MUSIC_ENABLED("Music Toggle: {0}"),
         SOUND_ENABLED("Sound Toggle: {0}"),
-        DEBUG_SCREEN_ENABLED("Debug Screen Toggle: {0}");
+        SOUND_VOLUME("Sound Volume {0}"),
+        DEBUG_SCREEN_ENABLED("Debug Screen Toggle: {0}"),
+        MAIN_MENU_CLOUDS_ENABLED("Main Menu Clouds Toggle: {0}"),
+        MAIN_MENU_CLOUDS_SPEED("Clouds Speed {0}");
 
         private final Supplier<String> label;
 
@@ -54,6 +61,20 @@ public class PreferencesScreen extends GenericScreen {
             this.label = () -> label;
         }
     }
+    // todo: think of a better name for this class
+    private static class ScreenData {
+        private TextButton musicToggleButton;
+        private Slider musicVolumeSlider;
+        private Label musicVolumeLabel;
+        private TextButton soundToggleButton;
+        private Slider soundVolumeSlider;
+        private Label soundVolumeLabel;
+        private TextButton debugScreenToggleButton;
+        private TextButton cloudsToggleButton;
+        private Slider cloudsSpeedSlider;
+        private Label cloudsSpeedLabel;
+        private TextButton backButton;
+    }
     public PreferencesScreen(GdxGame game) {
         super(game);
         processor = new Stage(new ScreenViewport());
@@ -62,7 +83,238 @@ public class PreferencesScreen extends GenericScreen {
 
     @Override
     public void show() {
-        final TextButton musicToggleButton = new TextButton(Labels.MUSIC_ENABLED.getLabel(((GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+        createMusicToggleButton();
+        listenMusicToggle();
+        createMusicVolumeSlider();
+        createMusicVolumeLabel();
+        listenMusicVolume();
+
+        createSoundToggleButton();
+        listenSoundToggle();
+        createSoundVolumeSlider();
+        createSoundVolumeLabel();
+        listenSoundVolume();
+
+
+        createDebugScreenToggleButton();
+        listenDebugScreenToggle();
+
+        createCloudsToggleButton();
+        listenCloudsToggle();
+        createCloudsSpeedSlider();
+        createCloudsSpeedLabel();
+        listenCloudsSpeed();
+
+        createBackButton();
+        listenBackButton();
+
+        setupTable();
+    }
+
+    private void listenCloudsSpeed() {
+        Slider cloudsSpeedSlider = screenData.cloudsSpeedSlider;
+        Label cloudsSpeedLabel = screenData.cloudsSpeedLabel;
+        cloudsSpeedSlider.addListener(event -> {
+            GamePreferences.MainMenuCloudsPreferences preference = (GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference();
+            preference.setSpeed(cloudsSpeedSlider.getValue());
+            cloudsSpeedLabel.setText(Labels.MAIN_MENU_CLOUDS_SPEED.getLabel(Math.round(cloudsSpeedSlider.getValue() * 100) + "%"));
+            return false;
+        });
+    }
+
+    private void createCloudsSpeedLabel() {
+        screenData.cloudsSpeedLabel = new Label(Labels.MAIN_MENU_CLOUDS_SPEED.getLabel(Math.round(screenData.cloudsSpeedSlider.getValue() * 100) + "%"), craftacularSkin);
+    }
+
+    private void createCloudsSpeedSlider() {
+        screenData.cloudsSpeedSlider = new Slider(0f, 3f, 0.01f, false, craftacularSkin);
+        screenData.cloudsSpeedSlider.setVisualPercent(((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed());
+        screenData.cloudsSpeedSlider.setValue(((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed());
+    }
+
+    private void listenCloudsToggle() {
+        TextButton cloudsToggleButton = screenData.cloudsToggleButton;
+        cloudsToggleButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                buttonClick.play();
+                GamePreferences.MainMenuCloudsPreferences preference = (GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference();
+                boolean nowEnabled = !preference.isEnabled();
+                preference.setEnabled(nowEnabled);
+                cloudsToggleButton.setText(Labels.MAIN_MENU_CLOUDS_ENABLED.getLabel(nowEnabled ? "ON" : "OFF"));
+            }
+        });
+    }
+
+    private void createCloudsToggleButton() {
+        screenData.cloudsToggleButton = new TextButton(Labels.MAIN_MENU_CLOUDS_ENABLED.getLabel(((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+    }
+
+    private void createBackButton() {
+        screenData.backButton = new TextButton(Labels.BACK_BUTTON.getLabel(), craftacularSkin);
+    }
+
+    private void createDebugScreenToggleButton() {
+        screenData.debugScreenToggleButton = new TextButton(Labels.DEBUG_SCREEN_ENABLED.getLabel(((GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+    }
+
+    private void createSoundVolumeLabel() {
+        screenData.soundVolumeLabel = new Label(Labels.SOUND_VOLUME.getLabel(Math.round(screenData.soundVolumeSlider.getValue() * 100) + "%"), craftacularSkin);
+    }
+
+    private void createSoundVolumeSlider() {
+        screenData.soundVolumeSlider = new Slider(0f, 1f, 0.01f, false, craftacularSkin);
+        screenData.soundVolumeSlider.setVisualPercent(((GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference()).getVolume());
+    }
+
+    private void createSoundToggleButton() {
+        screenData.soundToggleButton = new TextButton(Labels.SOUND_ENABLED.getLabel(((GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+    }
+
+    private void createMusicVolumeLabel() {
+        screenData.musicVolumeLabel = new Label(Labels.MUSIC_VOLUME.getLabel(Math.round(screenData.musicVolumeSlider.getValue() * 100) + "%"), craftacularSkin);
+    }
+
+    private void createMusicVolumeSlider() {
+        screenData.musicVolumeSlider = new Slider(0f, 1f, 0.01f, false, craftacularSkin);
+        screenData.musicVolumeSlider.setVisualPercent(((GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference()).getVolume());
+    }
+
+    private void createMusicToggleButton() {
+        screenData.musicToggleButton = new TextButton(Labels.MUSIC_ENABLED.getLabel(((GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+    }
+
+    private void listenBackButton() {
+        TextButton backButton = screenData.backButton;
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                SoundManager.getSounds().get(Sounds.BUTTON_CLICK).play();
+                game.setScreen(Screens.MAIN_MENU);
+            }
+        });
+    }
+
+    private void setupTable() {
+        TextButton musicToggleButton = screenData.musicToggleButton;
+        Slider musicVolumeSlider = screenData.musicVolumeSlider;
+        Label musicVolumeLabel = screenData.musicVolumeLabel;
+        TextButton soundToggleButton = screenData.soundToggleButton;
+        Slider soundVolumeSlider = screenData.soundVolumeSlider;
+        Label soundVolumeLabel = screenData.soundVolumeLabel;
+        TextButton debugScreenToggleButton = screenData.debugScreenToggleButton;
+        TextButton backButton = screenData.backButton;
+        TextButton cloudsToggleButton = screenData.cloudsToggleButton;
+        Slider cloudsSpeedSlider = screenData.cloudsSpeedSlider;
+        Label cloudsSpeedLabel = screenData.cloudsSpeedLabel;
+
+        table.setFillParent(true);
+        if (((GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled()) {
+            table.setDebug(true);
+        }
+        table.setSkin(craftacularSkin);
+        processor.addActor(table);
+        Cell<Label> titleCell = table.add(Labels.TITLE.getLabel()).colspan(2).pad(0, 0, 100, 0);
+        titleCell.getActor().setFontScale(1.5f);
+        table.row();
+        table.add(musicToggleButton).fillX().uniformX();
+        table.add(cloudsToggleButton).fillX().uniformX().pad(0, 50, 0, 0);
+        table.row();
+
+        Stack stack = new Stack();
+        stack.add(musicVolumeSlider);
+        // centre the label
+        musicVolumeLabel.setAlignment(1);
+        // make it so the label is not interactable
+        musicVolumeLabel.setTouchable(Touchable.disabled);
+        stack.add(musicVolumeLabel);
+        table.add(stack).center().fillX().uniformX().pad(0, 0, 25 ,0);
+
+        stack = new Stack();
+        stack.add(cloudsSpeedSlider);
+        // centre the label
+        cloudsSpeedLabel.setAlignment(1);
+        // make it so the label is not interactable
+        cloudsSpeedLabel.setTouchable(Touchable.disabled);
+        stack.add(cloudsSpeedLabel);
+        table.add(stack).center().fillX().uniformX().pad(0, 50, 25, 0);
+
+        table.row();
+        table.add(soundToggleButton).fillX().uniformX();
+        table.row();
+
+        stack = new Stack();
+        stack.add(soundVolumeSlider);
+        // centre the label
+        soundVolumeLabel.setAlignment(1);
+        // make it so the label is not interactable
+        soundVolumeLabel.setTouchable(Touchable.disabled);
+        stack.add(soundVolumeLabel);
+        table.add(stack).center().fillX().uniformX().pad(0, 0, 25, 0);
+
+        table.row();
+        table.add(debugScreenToggleButton).fillX().uniformX().pad(0, 0, 25, 0);
+        table.row();
+
+        // render back button across both columns
+        // add large gap
+        table.row().pad(150, 0, 0, 0);
+        table.add(backButton).colspan(2).fillX().uniformX();
+    }
+
+    private void listenDebugScreenToggle() {
+        TextButton debugScreenToggleButton = screenData.debugScreenToggleButton;
+        debugScreenToggleButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                buttonClick.play();
+                GamePreferences.DebugScreenPreferences preference = (GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference();
+                boolean nowEnabled = !preference.isEnabled();
+                preference.setEnabled(nowEnabled);
+                game.setScreen(Screens.PREFERENCES);
+            }
+        });
+    }
+
+    private void listenSoundVolume() {
+        Slider soundVolumeSlider = screenData.soundVolumeSlider;
+        Label soundVolumeLabel = screenData.soundVolumeLabel;
+        soundVolumeSlider.addListener(event -> {
+            GamePreferences.SoundPreferences preference = (GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference();
+            preference.setVolume(soundVolumeSlider.getValue());
+            soundVolumeLabel.setText(Labels.SOUND_VOLUME.getLabel(Math.round(soundVolumeSlider.getValue() * 100) + "%"));
+            return false;
+        });
+    }
+
+    private void listenSoundToggle() {
+        TextButton soundToggleButton = screenData.soundToggleButton;
+        soundToggleButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GamePreferences.SoundPreferences preference = (GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference();
+                boolean nowEnabled = !preference.isEnabled();
+                preference.setEnabled(nowEnabled);
+                soundToggleButton.setText(Labels.SOUND_ENABLED.getLabel(nowEnabled ? "ON" : "OFF"));
+                buttonClick.play();
+            }
+        });
+    }
+
+    private void listenMusicVolume() {
+        Slider musicVolumeSlider = screenData.musicVolumeSlider;
+        Label musicVolumeLabel = screenData.musicVolumeLabel;
+        musicVolumeSlider.addListener(event -> {
+            GamePreferences.MusicPreferences preference = (GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference();
+            preference.setVolume(musicVolumeSlider.getValue());
+            MusicManager.BACKGROUND_MUSIC.setVolume(musicVolumeSlider.getValue());
+            musicVolumeLabel.setText(Labels.MUSIC_VOLUME.getLabel(Math.round(musicVolumeSlider.getValue() * 100) + "%"));
+            return false;
+        });
+    }
+
+    private void listenMusicToggle() {
+        TextButton musicToggleButton = screenData.musicToggleButton;
         musicToggleButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -78,83 +330,6 @@ public class PreferencesScreen extends GenericScreen {
                 }
             }
         });
-
-        final Slider musicVolumeSlider = new Slider(0f, 1f, 0.01f, false, craftacularSkin);
-        musicVolumeSlider.setVisualPercent(((GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference()).getVolume());
-
-        Label musicVolumeLabel = new Label(Labels.MUSIC_VOLUME.getLabel(Math.round(musicVolumeSlider.getValue() * 100) + "%"), craftacularSkin);
-
-        musicVolumeSlider.addListener(event -> {
-            GamePreferences.MusicPreferences preference = (GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference();
-            preference.setVolume(musicVolumeSlider.getValue());
-            MusicManager.BACKGROUND_MUSIC.setVolume(musicVolumeSlider.getValue());
-            musicVolumeLabel.setText(Labels.MUSIC_VOLUME.getLabel(Math.round(musicVolumeSlider.getValue() * 100) + "%"));
-            return false;
-        });
-
-        final TextButton soundToggleButton = new TextButton(Labels.SOUND_ENABLED.getLabel(((GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
-        soundToggleButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GamePreferences.SoundPreferences preference = (GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference();
-                boolean nowEnabled = !preference.isEnabled();
-                preference.setEnabled(nowEnabled);
-                soundToggleButton.setText(Labels.SOUND_ENABLED.getLabel(nowEnabled ? "ON" : "OFF"));
-                buttonClick.play();
-            }
-        });
-
-        final TextButton debugScreenToggleButton = new TextButton(Labels.DEBUG_SCREEN_ENABLED.getLabel(((GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
-        debugScreenToggleButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                buttonClick.play();
-                GamePreferences.DebugScreenPreferences preference = (GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference();
-                boolean nowEnabled = !preference.isEnabled();
-                preference.setEnabled(nowEnabled);
-                game.setScreen(Screens.PREFERENCES);
-            }
-        });
-
-        final TextButton backButton = new TextButton(Labels.BACK_BUTTON.getLabel(), craftacularSkin);
-        backButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                SoundManager.getSounds().get(Sounds.BUTTON_CLICK).play();
-                game.setScreen(Screens.MAIN_MENU);
-            }
-        });
-
-        Table table = new Table();
-        table.setFillParent(true);
-        if (((GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled()) {
-            table.setDebug(true);
-        }
-        table.setSkin(craftacularSkin);
-        processor.addActor(table);
-        Cell<Label> titleCell = table.add(Labels.TITLE.getLabel()).colspan(2).pad(0, 0, 100, 0);
-        titleCell.getActor().setFontScale(1.5f);
-        table.row();
-        table.add(musicToggleButton).fillX().uniformX();
-        table.row();
-        Stack stack = new Stack();
-        stack.add(musicVolumeSlider);
-        // centre the label
-        musicVolumeLabel.setAlignment(1);
-        // make it so the label is not interactable
-        musicVolumeLabel.setTouchable(Touchable.disabled);
-        stack.add(musicVolumeLabel);
-        table.add(stack).center().fillX().uniformX().pad(0, 0, 25 ,0);
-        table.row();
-        table.add(soundToggleButton).fillX().uniformX().pad(0, 0, 25, 0);
-        table.row();
-        table.add(debugScreenToggleButton).fillX().uniformX().pad(0, 0, 25, 0);
-        table.row();
-
-        // render back button across both columns
-        // add large gap
-        table.row().pad(150, 0, 0, 0);
-        table.add(backButton).colspan(2).fillX().uniformX();
     }
 
     @Override
@@ -175,7 +350,7 @@ public class PreferencesScreen extends GenericScreen {
         }
 
         // draw the gradient at the bottom
-        batch.draw(bottomUpBlackGradient, 0, 0, Gdx.graphics.getWidth(), bottomUpBlackGradient.getHeight());
+        batch.draw(bottomUpBlackGradient, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         batch.end();
 
