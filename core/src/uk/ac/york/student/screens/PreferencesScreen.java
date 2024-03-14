@@ -23,9 +23,13 @@ import uk.ac.york.student.settings.GamePreferences;
 
 import java.util.function.Supplier;
 
-public class PreferencesScreen extends GenericScreen {
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+
+public class PreferencesScreen extends BaseScreen {
     @Getter
     private final Stage processor;
+    private final boolean shouldFadeIn;
+    private final float fadeInTime;
     private final ScreenData screenData = new ScreenData();
     private final Table table = new Table();
     private final GameSound buttonClick = SoundManager.getSupplierSounds().getResult(Sounds.BUTTON_CLICK);
@@ -75,14 +79,30 @@ public class PreferencesScreen extends GenericScreen {
         private Label cloudsSpeedLabel;
         private TextButton backButton;
     }
+
     public PreferencesScreen(GdxGame game) {
+        this(game, false);
+    }
+
+    public PreferencesScreen(GdxGame game, boolean shouldFadeIn) {
+        this(game, shouldFadeIn, 0.75f);
+    }
+
+    public PreferencesScreen(GdxGame game, boolean shouldFadeIn, float fadeInTime) {
         super(game);
+        this.shouldFadeIn = shouldFadeIn;
+        this.fadeInTime = fadeInTime;
         processor = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(processor);
     }
 
     @Override
     public void show() {
+        if (shouldFadeIn) {
+            processor.getRoot().getColor().a = 0;
+            processor.getRoot().addAction(fadeIn(1f));
+        }
+
         createMusicToggleButton();
         listenMusicToggle();
         createMusicVolumeSlider();
@@ -190,7 +210,7 @@ public class PreferencesScreen extends GenericScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 SoundManager.getSounds().get(Sounds.BUTTON_CLICK).play();
-                game.setScreen(Screens.MAIN_MENU);
+                game.transitionScreen(Screens.MAIN_MENU);
             }
         });
     }

@@ -26,10 +26,11 @@ import java.util.concurrent.TimeUnit;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 
-public class MainMenuScreen extends GenericScreen {
+public class MainMenuScreen extends BaseScreen {
     @Getter
     private final Stage processor;
     private final boolean shouldFadeIn;
+    private final float fadeInTime;
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("images/MapOverview.png"));
     private final Texture vignetteTexture = new Texture(Gdx.files.internal("images/Vignette.png"));
     private final Texture cookeLogo = new Texture(Gdx.files.internal("images/logo/b/logo.png"));
@@ -44,8 +45,13 @@ public class MainMenuScreen extends GenericScreen {
     }
 
     public MainMenuScreen(GdxGame game, boolean shouldFadeIn) {
+        this(game, shouldFadeIn, 0.75f);
+    }
+
+    public MainMenuScreen(GdxGame game, boolean shouldFadeIn, float fadeInTime) {
         super(game);
         this.shouldFadeIn = shouldFadeIn;
+        this.fadeInTime = fadeInTime;
         processor = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(processor);
     }
@@ -54,7 +60,7 @@ public class MainMenuScreen extends GenericScreen {
     public void show() {
         if (shouldFadeIn) {
             processor.getRoot().getColor().a = 0;
-            processor.getRoot().addAction(fadeIn(1f));
+            processor.getRoot().addAction(fadeIn(0.75f));
         }
 
         Table table = new Table();
@@ -106,7 +112,7 @@ public class MainMenuScreen extends GenericScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 SoundManager.getSounds().get(Sounds.BUTTON_CLICK).play();
-                game.setScreen(Screens.PREFERENCES);
+                game.transitionScreen(Screens.PREFERENCES);
             }
         });
     }

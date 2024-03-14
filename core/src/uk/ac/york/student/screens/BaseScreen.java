@@ -4,10 +4,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import uk.ac.york.student.GdxGame;
 
-public abstract class GenericScreen implements Screen {
+public abstract class BaseScreen implements Screen {
     protected final GdxGame game;
 
-    protected GenericScreen(GdxGame game) {
+    protected BaseScreen(GdxGame game) {
         this.game = game;
     }
 

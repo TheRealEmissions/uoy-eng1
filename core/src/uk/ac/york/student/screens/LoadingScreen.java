@@ -1,12 +1,11 @@
 package uk.ac.york.student.screens;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import lombok.Getter;
 import uk.ac.york.student.GdxGame;
 
-public class LoadingScreen extends GenericScreen {
+public class LoadingScreen extends BaseScreen {
     @Getter
     private final Stage processor;
     public LoadingScreen(GdxGame game) {
