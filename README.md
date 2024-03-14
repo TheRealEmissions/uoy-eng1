@@ -8,3 +8,4 @@ to be updated
 - [Lucy](https://github.com/lc2353)
 - [Tim](https://github.com/tgorst)
 - [Sammy](https://github.com/sammyhori)
+- [Kai](https://github.com/kaimi1616)
