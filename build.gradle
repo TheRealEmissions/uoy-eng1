@@ -55,6 +55,7 @@ project(":desktop") {
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
         implementation 'org.jetbrains:annotations:24.0.0'
+        implementation 'com.github.blueboxware:libgdxplugin:1.23.1'
         
     }
 }
@@ -74,6 +75,7 @@ project(":core") {
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
         implementation 'org.jetbrains:annotations:24.0.0'
+        implementation 'com.github.blueboxware:libgdxplugin:1.23.1'
         
     }
 }
