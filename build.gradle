@@ -54,6 +54,7 @@ project(":desktop") {
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        implementation 'org.jetbrains:annotations:24.0.0'
         
     }
 }
@@ -72,6 +73,7 @@ project(":core") {
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        implementation 'org.jetbrains:annotations:24.0.0'
         
     }
 }
