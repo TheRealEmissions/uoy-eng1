@@ -100,7 +100,7 @@ public class PreferencesScreen extends BaseScreen {
     public void show() {
         if (shouldFadeIn) {
             processor.getRoot().getColor().a = 0;
-            processor.getRoot().addAction(fadeIn(1f));
+            processor.getRoot().addAction(fadeIn(fadeInTime));
         }
 
         createMusicToggleButton();

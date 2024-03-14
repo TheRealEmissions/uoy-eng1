@@ -4,15 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import uk.ac.york.student.GdxGame;
 import uk.ac.york.student.assets.skins.SkinManager;
 import uk.ac.york.student.assets.skins.Skins;
@@ -22,6 +26,9 @@ import uk.ac.york.student.audio.sound.Sounds;
 import uk.ac.york.student.settings.GamePreferences;
 import uk.ac.york.student.utils.Wait;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
@@ -35,6 +42,7 @@ public class MainMenuScreen extends BaseScreen {
     private final Texture vignetteTexture = new Texture(Gdx.files.internal("images/Vignette.png"));
     private final Texture cookeLogo = new Texture(Gdx.files.internal("images/logo/b/logo.png"));
     private final Texture clouds = new Texture(Gdx.files.internal("images/CloudsFormatted.png"));
+    private final Image cloudsImage = new Image(clouds);
     private final Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
     private final GameSound buttonClick = SoundManager.getSupplierSounds().getResult(Sounds.BUTTON_CLICK);
 
@@ -56,11 +64,49 @@ public class MainMenuScreen extends BaseScreen {
         Gdx.input.setInputProcessor(processor);
     }
 
+    public enum Direction {
+        UP, DOWN, LEFT, RIGHT
+    }
+
+    public void zoomAndMove(@NotNull Actor actor, @NotNull Direction direction) {
+        Vector2 vector = new Vector2();
+        float scale = 2;
+        int duration = 1;
+        int distance = 800;
+        switch (direction) {
+            case UP:
+                vector.set(0, distance);
+                break;
+            case DOWN:
+                vector.set(0, -distance);
+                break;
+            case LEFT:
+                vector.set(-distance, 0);
+                break;
+            case RIGHT:
+                vector.set(distance, 0);
+                break;
+        }
+        actor.setOrigin(Align.center);
+        actor.addAction(Actions.parallel(
+            Actions.scaleTo(scale, scale, duration),
+            Actions.moveBy(vector.x, vector.y, duration)
+        ));
+    }
+
+    public void fadeOut(@NotNull Actor actor) {
+        int duration = 1;
+        actor.setOrigin(Align.center);
+        actor.addAction(Actions.fadeOut(duration));
+    }
+
+    private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
     @Override
     public void show() {
         if (shouldFadeIn) {
             processor.getRoot().getColor().a = 0;
-            processor.getRoot().addAction(fadeIn(0.75f));
+            processor.getRoot().addAction(fadeIn(fadeInTime));
         }
 
         Table table = new Table();
@@ -104,7 +150,16 @@ public class MainMenuScreen extends BaseScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 SoundManager.getSounds().get(Sounds.BUTTON_CLICK).play();
-                game.setScreen(Screens.GAME);
+
+                // move all elements zoomAndMove()
+                zoomAndMove(playButton, Direction.DOWN);
+                zoomAndMove(preferencesButton, Direction.DOWN);
+                zoomAndMove(exitButton, Direction.DOWN);
+                zoomAndMove(cookeLogoImage, Direction.UP);
+                fadeOut(cloudsImage);
+
+                Wait.async(1500, TimeUnit.MILLISECONDS)
+                    .thenRun(() -> Gdx.app.postRunnable(() -> game.setScreen(Screens.GAME)));
             }
         });
 
@@ -115,6 +170,22 @@ public class MainMenuScreen extends BaseScreen {
                 game.transitionScreen(Screens.PREFERENCES);
             }
         });
+
+        float width;
+        float height;
+
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
+        float widthRatio = screenWidth / backgroundTexture.getWidth();
+        float heightRatio = screenHeight / backgroundTexture.getHeight();
+
+        float ratio = Math.max(widthRatio, heightRatio);
+
+        width = backgroundTexture.getWidth() * ratio;
+        height = backgroundTexture.getHeight() * ratio;
+
+        cloudsImage.setSize(width, height);
     }
 
     private float cycle = 0;
@@ -148,8 +219,14 @@ public class MainMenuScreen extends BaseScreen {
             if (cycle > width) {
                 cycle = 0;
             } else cycle += cloudsSpeed;
-            batch.draw(clouds, cycle, 0, width, height);
-            batch.draw(clouds, cycle - width, 0, width, height);
+
+            // render cloudsImage
+            cloudsImage.setPosition(cycle, 0);
+            // draw with respect to fade out alpha
+            cloudsImage.draw(batch, cloudsImage.getColor().a);
+
+            cloudsImage.setPosition(cycle - width, 0);
+            cloudsImage.draw(batch, cloudsImage.getColor().a);
         }
 
 
@@ -165,6 +242,19 @@ public class MainMenuScreen extends BaseScreen {
     @Override
     public void resize(int width, int height) {
         processor.getViewport().update(width, height, true);
+
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
+        float widthRatio = screenWidth / backgroundTexture.getWidth();
+        float heightRatio = screenHeight / backgroundTexture.getHeight();
+
+        float ratio = Math.max(widthRatio, heightRatio);
+
+        float newWidth = backgroundTexture.getWidth() * ratio;
+        float newHeight = backgroundTexture.getHeight() * ratio;
+
+        cloudsImage.setSize(newWidth, newHeight);
     }
 
     @Override

@@ -26,14 +26,7 @@ public final class Screens {
         Field[] fields = Screens.class.getFields();
         // using reflection, set the fields to their respective classes
         for (Field field : fields) {
-            String name = field.getName();
-            // convert name to UpperCamelCase
-            name = Arrays.stream(name.split("_"))
-                    .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase())
-                    .reduce("", String::concat);
-            name += "Screen";
-
-            String path = Screens.class.getPackageName() + "." + name;
+            String path = field.getGenericType().getTypeName().replace("java.lang.Class<", "").replace(">", "");
             try {
                 // Many linters will complain about this, but it's fine in this case
                 // as it does not have an effect on the program's security,
