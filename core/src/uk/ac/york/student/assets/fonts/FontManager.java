@@ -10,7 +10,8 @@ public class FontManager {
     /**
      * Singleton instance of the font manager
      */
-    public static final FontManager instance = new FontManager();
+    @Getter
+    private static final FontManager instance = new FontManager();
 
     private final BitmapFont font;
 
