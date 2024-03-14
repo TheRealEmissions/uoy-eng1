@@ -1,0 +1,23 @@
+@startwbs
+'https://plantuml.com/wbs-diagram
+
+* Create Plan
+** Write up Architecture
+*** create sequence diagrams
+*** write CRC cards
+*** create use case diagram
+** Write up Requirements
+*** Write introduction
+*** write SSON
+*** create User requirements chart
+** Write up Risks
+*** create risk management process
+*** create table of risks
+*** assign ownership, impact and mitigation
+** Implementation
+*** Install libraries
+*** Implement movement
+*** Implement locations
+*** Implement day timer and ending
+*** implement music & sprites
+@endwbs
