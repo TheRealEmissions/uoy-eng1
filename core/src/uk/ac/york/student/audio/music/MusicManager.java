@@ -24,7 +24,7 @@ public class MusicManager implements AudioManager {
      * Private constructor to prevent instantiation
      */
     private MusicManager() {
-        throw new UnsupportedOperationException("This class cannot be instantiated");
+
     }
     /**
      * Called when the game is started
