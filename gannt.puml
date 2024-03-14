@@ -20,41 +20,41 @@ then [Write up Requirements] on {Lucy}{Zac}{Lia} requires 5 days and is colored 
 [Write up Requirements] is 100% complete
 
 --Design--
-[Initial Architecture] on {Lia}{Zac}{Liam} starts at 2024-03-07 and requires 7 days and is colored in yellowgreen/black
-[Initial Architecture] is 0% complete
-then [Update] on {Lia}{Kai} starts at [Initial Architecture]'s end and requires 5 days and is colored in yellowgreen/black
+[Initial Architecture] on {Lia,Zac,Lucy} starts at 2024-03-09 and requires 6 days and is colored in yellowgreen/black
+[Initial Architecture] is 90% complete
+then [Update] on {Lia,Zac,Kai} starts at [Initial Architecture]'s end and requires 5 days and is colored in yellowgreen/black
 [Update] is 0% complete
 [Risk Assessment]  on {Kai}{Zac} starts at 2024-02-29 and requires 5 days and is colored in yellowgreen/black
 [Risk Assessment] is 100% complete
-[Design Map] on {Lia} starts at 2024-03-07 and requires 4 days and is colored in yellowgreen/black
-[Design Map] is 15% complete
+[Design Map] on {Lucy} starts at 2024-03-14 and requires 1 day and is colored in yellowgreen/black
+[Design Map] is 100% complete
 
 
 --Implementation--
-[Basic movement] on {Liam} requires 2 days and starts at 2024-03-07 and is colored in pink/black
-[Basic movement] is 0% complete
-then [Places Functionality] requires 2 days and is colored in pink/black
+[Basic movement] on {Liam} requires 2 days and starts at 2024-03-12 and is colored in pink/black
+[Basic movement] is 100% complete
+then [Places Functionality] happens at [Basic movement]'s end and is colored in pink/black
 [Places Functionality] is 0% complete
 then [Day Timer] requires 1 day and is colored in pink/black
 [Day Timer] is 0% complete
 then [Activity Tracker] on {Sammy} requires 2 days and is colored in pink/black
 [Activity Tracker] is 0% complete
 then [Testing] happens at [Activity Tracker]'s end and is colored in pink/black
-then [Refactor] requires 4 days and is colored in pink/black
+then [Refactor] requires 1 day and is colored in pink/black
 [Refactor] is 0% complete
 then [Final Testing] happens at [Refactor]'s end and is colored in pink/black
 [Final Testing] is 0% complete
-[Implementation WriteUp] on {Tim}{Zac} starts at 2024-03-12 and requires 5 days and is colored in pink/black
-
+[Implementation WriteUp] starts at 2024-03-16 and requires 5 days and is colored in pink/black
+[Implementation WriteUp] is 0% complete
 --Report--
-[Method Selection] on {Tim}{Lucy} starts at 2024-03-07 and requires 5 days and is colored in tan/black
-[Method Selection] is 30% complete
-[Website Design] on {Sammy} starts at 2024-03-07 and requires 14 days and is colored in tan/black
-[Website Design] is 10% complete
+[Method Selection] on {Tim} starts at 2024-03-07 and requires 8 days and is colored in tan/black
+[Method Selection] is 100% complete
+[Website Design] on {Sammy} starts at 2024-03-14 and requires 7 days and is colored in tan/black
+[Website Design] is 30% complete
 [Gather Gantts] ends at [Website Design]'s end and requires 2 days and is colored in tan/black
 [Gather Gantts] is 0% complete
 [Weekly Gantt Updates] ends at [Gather Gantts]'s start and requires 4 weeks and is colored in tan/black
-[Weekly Gantt Updates] is 60% complete
+[Weekly Gantt Updates] is 85% complete
 [Project Due] happens at 2024-03-21
 
 @endgantt
