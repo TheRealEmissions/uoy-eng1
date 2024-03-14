@@ -1,11 +1,17 @@
 package uk.ac.york.student.screens;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import lombok.Getter;
 import uk.ac.york.student.GdxGame;
 
 public class LoadingScreen extends GenericScreen {
+    @Getter
+    private final Stage processor;
     public LoadingScreen(GdxGame game) {
         super(game);
+        processor = new Stage(new ScreenViewport());
     }
     @Override
     public void show() {
@@ -14,7 +20,7 @@ public class LoadingScreen extends GenericScreen {
 
     @Override
     public void render(float v) {
-        game.setScreen(Screens.MAIN_MENU);
+        game.setScreen(Screens.MAIN_MENU, true);
     }
 
     @Override

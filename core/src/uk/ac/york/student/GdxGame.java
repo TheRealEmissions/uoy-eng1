@@ -53,6 +53,24 @@ public final class GdxGame extends Game {
         super.setScreen(newScreen);
 	}
 
+	public void setScreen(@NotNull Class<? extends GenericScreen> screen, boolean shouldFadeIn) {
+		// dispose current screen
+		final Screen currentScreen = getScreen();
+		if (currentScreen != null) {
+			currentScreen.dispose();
+		}
+
+		GenericScreen newScreen;
+		try {
+			newScreen = screen.getConstructor(GdxGame.class, boolean.class).newInstance(this, shouldFadeIn);
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			Gdx.app.error("LetRonCooke", "Error loading screen", e);
+			Gdx.app.exit();
+			return;
+		}
+		super.setScreen(newScreen);
+	}
+
 
 	@Override
 	public void render() {

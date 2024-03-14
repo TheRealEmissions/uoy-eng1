@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import lombok.Getter;
 import uk.ac.york.student.GdxGame;
 import uk.ac.york.student.assets.skins.SkinManager;
 import uk.ac.york.student.assets.skins.Skins;
@@ -23,21 +24,39 @@ import uk.ac.york.student.utils.Wait;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+
 public class MainMenuScreen extends GenericScreen {
+    @Getter
     private final Stage processor;
+    private final boolean shouldFadeIn;
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("images/MapOverview.png"));
     private final Texture vignetteTexture = new Texture(Gdx.files.internal("images/Vignette.png"));
     private final Texture cookeLogo = new Texture(Gdx.files.internal("images/logo/b/logo.png"));
+    private final Texture clouds = new Texture(Gdx.files.internal("images/CloudsFormatted.png"));
     private final Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
     private final GameSound buttonClick = SoundManager.getSupplierSounds().getResult(Sounds.BUTTON_CLICK);
+
+    private final boolean cloudsEnabled = ((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).isEnabled();
+    private final float cloudsSpeed = ((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed();
     public MainMenuScreen(GdxGame game) {
+        this(game, false);
+    }
+
+    public MainMenuScreen(GdxGame game, boolean shouldFadeIn) {
         super(game);
+        this.shouldFadeIn = shouldFadeIn;
         processor = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(processor);
     }
 
     @Override
     public void show() {
+        if (shouldFadeIn) {
+            processor.getRoot().getColor().a = 0;
+            processor.getRoot().addAction(fadeIn(1f));
+        }
+
         Table table = new Table();
         table.setFillParent(true);
         if (((GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled()) {
@@ -92,6 +111,7 @@ public class MainMenuScreen extends GenericScreen {
         });
     }
 
+    private float cycle = 0;
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -116,6 +136,17 @@ public class MainMenuScreen extends GenericScreen {
         height = backgroundTexture.getHeight() * ratio;
 
         batch.draw(backgroundTexture, 0, 0, width, height);
+
+
+        if (cloudsEnabled) {
+            if (cycle > width) {
+                cycle = 0;
+            } else cycle += cloudsSpeed;
+            batch.draw(clouds, cycle, 0, width, height);
+            batch.draw(clouds, cycle - width, 0, width, height);
+        }
+
+
 
         batch.draw(vignetteTexture, 0, 0, screenWidth, screenHeight);
 
@@ -152,6 +183,7 @@ public class MainMenuScreen extends GenericScreen {
         vignetteTexture.dispose();
         craftacularSkin.dispose();
         cookeLogo.dispose();
+        clouds.dispose();
         buttonClick.dispose();
     }
 }
