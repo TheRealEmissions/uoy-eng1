@@ -151,6 +151,7 @@ public class MainMenuScreen extends GenericScreen {
         backgroundTexture.dispose();
         vignetteTexture.dispose();
         craftacularSkin.dispose();
+        cookeLogo.dispose();
         buttonClick.dispose();
     }
 }
