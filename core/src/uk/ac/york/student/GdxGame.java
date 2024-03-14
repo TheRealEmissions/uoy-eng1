@@ -38,7 +38,7 @@ public final class GdxGame extends Game {
 	public void setScreen(@NotNull Class<? extends GenericScreen> screen) {
         GenericScreen newScreen;
 		try {
-            newScreen = screen.getDeclaredConstructor().newInstance(this);
+            newScreen = screen.getConstructor(Game.class).newInstance(this);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             Gdx.app.error("LetRonCooke", "Error loading screen", e);
 			Gdx.app.exit();
