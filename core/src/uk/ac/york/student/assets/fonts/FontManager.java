@@ -1,11 +1,9 @@
-package uk.ac.york.student.fonts;
+package uk.ac.york.student.assets.fonts;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import lombok.Getter;
-import lombok.experimental.UtilityClass;
-import sun.font.TrueTypeFont;
 
 @Getter
 public class FontManager {
