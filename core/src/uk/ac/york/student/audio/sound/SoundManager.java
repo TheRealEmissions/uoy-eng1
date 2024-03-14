@@ -3,9 +3,9 @@ package uk.ac.york.student.audio.sound;
 import lombok.Getter;
 import uk.ac.york.student.audio.AudioManager;
 import uk.ac.york.student.audio.sound.elements.ButtonClickSound;
-import uk.ac.york.student.settings.GamePreferences;
 import uk.ac.york.student.utils.EnumSupplierMap;
 
+import java.util.EnumMap;
 import java.util.function.Supplier;
 
 /**
@@ -20,9 +20,12 @@ public class SoundManager implements AudioManager {
 
     private static final Supplier<GameSound> buttonClickSound = ButtonClickSound::new;
     @Getter
-    private static final EnumSupplierMap<Sounds, GameSound> sounds = new EnumSupplierMap<>(Sounds.class);
+    private static final EnumMap<Sounds, GameSound> sounds = new EnumMap<>(Sounds.class);
+    @Getter
+    private static final EnumSupplierMap<Sounds, GameSound> supplierSounds = new EnumSupplierMap<>(Sounds.class);
     static {
-        sounds.put(Sounds.BUTTON_CLICK, buttonClickSound);
+        sounds.put(Sounds.BUTTON_CLICK, buttonClickSound.get());
+        supplierSounds.put(Sounds.BUTTON_CLICK, buttonClickSound);
     }
 
     /**
@@ -44,6 +47,8 @@ public class SoundManager implements AudioManager {
      */
     @Override
     public void onDisable() {
-
+        for (GameSound sound : sounds.values()) {
+            sound.dispose();
+        }
     }
 }
