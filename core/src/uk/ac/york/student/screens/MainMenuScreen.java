@@ -27,7 +27,7 @@ public class MainMenuScreen extends GenericScreen {
     private final Stage processor;
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("images/MapOverview.png"));
     private final Texture vignetteTexture = new Texture(Gdx.files.internal("images/Vignette.png"));
-    private final Texture logo = new Texture(Gdx.files.internal("images/Logo.png"));
+    private final Texture cookeLogo = new Texture(Gdx.files.internal("images/logo/b/logo.png"));
     private final Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
     private final GameSound buttonClick = SoundManager.getSupplierSounds().getResult(Sounds.BUTTON_CLICK);
     public MainMenuScreen(GdxGame game) {
@@ -49,8 +49,12 @@ public class MainMenuScreen extends GenericScreen {
         TextButton preferencesButton = new TextButton("Preferences", craftacularSkin);
         TextButton exitButton = new TextButton("Exit", craftacularSkin);
 
-        Image logoImage = new Image(logo);
-        table.add(logoImage).fillX().uniformX();
+        Image cookeLogoImage = new Image(cookeLogo);
+
+
+/*        table.add(letRonLogoImage).fillX().uniformX().pad(0, 0, 10, 0);
+        table.row();*/
+        table.add(cookeLogoImage).fillX().uniformX().pad(0, 0, 150, 0);
         table.row();
 
         table.add(playButton).fillX().uniformX();
@@ -146,7 +150,6 @@ public class MainMenuScreen extends GenericScreen {
         processor.dispose();
         backgroundTexture.dispose();
         vignetteTexture.dispose();
-        logo.dispose();
         craftacularSkin.dispose();
         buttonClick.dispose();
     }
