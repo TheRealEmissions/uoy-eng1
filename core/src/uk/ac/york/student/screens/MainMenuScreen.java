@@ -1,10 +1,12 @@
 package uk.ac.york.student.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -23,6 +25,11 @@ import java.util.concurrent.TimeUnit;
 
 public class MainMenuScreen extends GenericScreen {
     private final Stage processor;
+    private final Texture backgroundTexture = new Texture(Gdx.files.internal("images/MapOverview.png"));
+    private final Texture vignetteTexture = new Texture(Gdx.files.internal("images/Vignette.png"));
+    private final Texture logo = new Texture(Gdx.files.internal("images/Logo.png"));
+    private final Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
+    private final GameSound buttonClick = SoundManager.getSupplierSounds().getResult(Sounds.BUTTON_CLICK);
     public MainMenuScreen(GdxGame game) {
         super(game);
         processor = new Stage(new ScreenViewport());
@@ -38,11 +45,13 @@ public class MainMenuScreen extends GenericScreen {
         }
         processor.addActor(table);
 
-        Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
-
         TextButton playButton = new TextButton("Let Ron Cooke", craftacularSkin);
         TextButton preferencesButton = new TextButton("Preferences", craftacularSkin);
         TextButton exitButton = new TextButton("Exit", craftacularSkin);
+
+        Image logoImage = new Image(logo);
+        table.add(logoImage).fillX().uniformX();
+        table.row();
 
         table.add(playButton).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);
@@ -53,7 +62,6 @@ public class MainMenuScreen extends GenericScreen {
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                GameSound buttonClick = SoundManager.getSounds().getResult(Sounds.BUTTON_CLICK);
                 buttonClick.play();
                 Wait.async(400, TimeUnit.MILLISECONDS)
                     .thenRun(() -> {
@@ -66,8 +74,7 @@ public class MainMenuScreen extends GenericScreen {
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                GameSound buttonClick = SoundManager.getSounds().getResult(Sounds.BUTTON_CLICK);
-                buttonClick.play();
+                SoundManager.getSounds().get(Sounds.BUTTON_CLICK).play();
                 game.setScreen(Screens.GAME);
             }
         });
@@ -75,8 +82,7 @@ public class MainMenuScreen extends GenericScreen {
         preferencesButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                GameSound buttonClick = SoundManager.getSounds().getResult(Sounds.BUTTON_CLICK);
-                buttonClick.play();
+                SoundManager.getSounds().get(Sounds.BUTTON_CLICK).play();
                 game.setScreen(Screens.PREFERENCES);
             }
         });
@@ -86,6 +92,30 @@ public class MainMenuScreen extends GenericScreen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // draw MapOverview.png as background
+        Batch batch = processor.getBatch();
+        batch.begin();
+
+        float width;
+        float height;
+
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+
+        float widthRatio = screenWidth / backgroundTexture.getWidth();
+        float heightRatio = screenHeight / backgroundTexture.getHeight();
+
+        float ratio = Math.max(widthRatio, heightRatio);
+
+        width = backgroundTexture.getWidth() * ratio;
+        height = backgroundTexture.getHeight() * ratio;
+
+        batch.draw(backgroundTexture, 0, 0, width, height);
+
+        batch.draw(vignetteTexture, 0, 0, screenWidth, screenHeight);
+
+        batch.end();
 
         processor.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         processor.draw();
@@ -114,5 +144,10 @@ public class MainMenuScreen extends GenericScreen {
     @Override
     public void dispose() {
         processor.dispose();
+        backgroundTexture.dispose();
+        vignetteTexture.dispose();
+        logo.dispose();
+        craftacularSkin.dispose();
+        buttonClick.dispose();
     }
 }
