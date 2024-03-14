@@ -2,6 +2,7 @@ package uk.ac.york.student.audio.sound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import uk.ac.york.student.settings.GamePreferences;
 
 /**
  * The base class for all game sounds
@@ -26,7 +27,7 @@ public abstract class GameSound implements Sound {
      */
     @Override
     public long play() {
-        return sound.play();
+        return sound.play(((GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference()).getVolume());
     }
 
     /**
@@ -57,7 +58,7 @@ public abstract class GameSound implements Sound {
      */
     @Override
     public long loop() {
-        return sound.loop();
+        return sound.loop(((GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference()).getVolume());
     }
 
     /**
