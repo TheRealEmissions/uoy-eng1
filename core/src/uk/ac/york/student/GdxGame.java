@@ -1,12 +1,24 @@
 package uk.ac.york.student;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ScreenUtils;
+import org.jetbrains.annotations.NotNull;
 import uk.ac.york.student.audio.AudioManager;
 import uk.ac.york.student.audio.music.MusicManager;
 import uk.ac.york.student.audio.sound.SoundManager;
+import uk.ac.york.student.screens.GenericScreen;
+import uk.ac.york.student.screens.Screens;
 
-public final class GdxGame extends ApplicationAdapter {
+import java.lang.reflect.InvocationTargetException;
+
+public final class GdxGame extends Game {
+
+	public GdxGame() {
+		super();
+	}
 	
 	@Override
 	public void create() {
@@ -15,12 +27,36 @@ public final class GdxGame extends ApplicationAdapter {
 
 		final AudioManager soundManager = SoundManager.getInstance();
 		soundManager.onEnable();
+
+		setScreen(Screens.LOADING);
+	}
+
+	/**
+	 * Set the current screen
+	 * @param screen - the screen to set (use Screens class)
+	 */
+	public void setScreen(@NotNull Class<? extends GenericScreen> screen) {
+		// dispose current screen
+		final Screen currentScreen = getScreen();
+		if (currentScreen != null) {
+			currentScreen.dispose();
+		}
+
+        GenericScreen newScreen;
+		try {
+            newScreen = screen.getConstructor(GdxGame.class).newInstance(this);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            Gdx.app.error("LetRonCooke", "Error loading screen", e);
+			Gdx.app.exit();
+			return;
+        }
+        super.setScreen(newScreen);
 	}
 
 
 	@Override
 	public void render() {
-		ScreenUtils.clear(0, 0, 0, 1);
+		super.render();
 	}
 	
 	@Override
