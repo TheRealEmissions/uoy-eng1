@@ -1,11 +1,11 @@
-package uk.ac.york.student;
+package uk.ac.york.student.player;
 
+import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+@UtilityClass
 public class ScoreCalculator {
-    private static void main(String[] arg) {
-        // In order to easily see some outputs, make this public and uncomment:
-        // System.out.println(calculateScore(50, 100, 50, 100, 3, 3));
-    }
-
     /**
      * Calculate a score for the student/player.
      * <p>
@@ -15,7 +15,6 @@ public class ScoreCalculator {
      * gain from 20 to 30).
      * <p>
      * <p>
-     * The algorithm also allows for a choice of difficulties, with a custom
      * The algorithm also allows for a choice of difficulties, with a custom
      * difficulty range too.
      * </p>
@@ -47,9 +46,7 @@ public class ScoreCalculator {
                 / (1.4 + difficultyScore * (0.26f))
                 , 100.0f);
 
-        int percentScoreInt = (int) Math.round(percentScoreDouble);
-
-        return percentScoreInt;
+        return (int) Math.round(percentScoreDouble);
     }
 
     public static int calculateScore(int energy, int maxEnergy, int studyTime,
@@ -64,7 +61,8 @@ public class ScoreCalculator {
     /**
      * Output an associated degree class given a score (out of 100).
      */
-    public static String calculateGrade(int score) {
+    @Contract(pure = true)
+    public static @NotNull String getGradeStr(int score) {
         if (score >= 70) {
             return "First-class Honours";
         } else if (score >= 60) {
