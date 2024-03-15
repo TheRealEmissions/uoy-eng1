@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
-public class ScoreCalculator {
+public class PlayerScore {
     /**
      * Calculate a score for the student/player.
      * <p>
@@ -31,9 +31,9 @@ public class ScoreCalculator {
      *                       to.
      * @return An int score out of 100 calculated with the given variable.
      */
-    public static int calculateScore(float energy, float maxEnergy, float studyTime,
-                                     float maxStudyTime, int difficulty,
-                                     int maxDifficulty) {
+    public static int calculate(float energy, float maxEnergy, float studyTime,
+                                float maxStudyTime, int difficulty,
+                                int maxDifficulty) {
         float energyScore = Math.min(energy / maxEnergy, 1.0f) * 100;
         float studyScore = Math.min(studyTime / maxStudyTime, 1.0f) * 100;
 
@@ -49,10 +49,10 @@ public class ScoreCalculator {
         return (int) Math.round(percentScoreDouble);
     }
 
-    public static int calculateScore(int energy, int maxEnergy, int studyTime,
-                                     int maxStudyTime, int difficulty,
-                                     int maxDifficulty) {
-        return calculateScore(
+    public static int calculate(int energy, int maxEnergy, int studyTime,
+                                int maxStudyTime, int difficulty,
+                                int maxDifficulty) {
+        return calculate(
                 (float) energy, (float) maxEnergy, (float) studyTime,
                 (float) maxStudyTime, difficulty, maxDifficulty
         );
@@ -62,7 +62,7 @@ public class ScoreCalculator {
      * Output an associated degree class given a score (out of 100).
      */
     @Contract(pure = true)
-    public static @NotNull String getGradeStr(int score) {
+    public static @NotNull String convertToString(int score) {
         if (score >= 70) {
             return "First-class Honours";
         } else if (score >= 60) {
