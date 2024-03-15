@@ -238,7 +238,10 @@ public class PreferencesScreen extends BaseScreen {
         titleCell.getActor().setFontScale(1.5f);
         table.row();
         table.add(musicToggleButton).fillX().uniformX();
-        table.add(cloudsToggleButton).fillX().uniformX().pad(0, 50, 0, 0);
+        // .minWidth() sets the width of the button to 1.1 * default width.
+        // This ensures that if the text changes it fits in the original wdith.
+        // Except for the back button, all other buttons will be the same size.
+        table.add(cloudsToggleButton).fillX().minWidth(cloudsToggleButton.getWidth()*1.1f).uniformX().pad(0, 50, 0, 0);
         table.row();
 
         Stack stack = new Stack();
