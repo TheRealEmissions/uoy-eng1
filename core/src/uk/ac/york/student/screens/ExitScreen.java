@@ -1,12 +1,18 @@
 package uk.ac.york.student.screens;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import lombok.Getter;
 import uk.ac.york.student.GdxGame;
 import uk.ac.york.student.assets.fonts.FontManager;
 
-public class ExitScreen extends GenericScreen {
+public class ExitScreen extends BaseScreen {
+    @Getter
+    private final Stage processor;
     public ExitScreen(GdxGame game) {
         super(game);
+        processor = new Stage(new ScreenViewport());
     }
 
     @Override
