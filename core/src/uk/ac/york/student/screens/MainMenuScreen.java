@@ -133,7 +133,7 @@ public class MainMenuScreen extends BaseScreen {
         processor.addActor(table);
 
         TextButton playButton = new TextButton("Let Ron Cooke", craftacularSkin);
-        TextButton preferencesButton = new TextButton("Preferences", craftacularSkin);
+        TextButton preferencesButton = new TextButton("Settings", craftacularSkin);
         TextButton exitButton = new TextButton("Exit", craftacularSkin);
 
         Image cookeLogoImage = new Image(cookeLogo);
