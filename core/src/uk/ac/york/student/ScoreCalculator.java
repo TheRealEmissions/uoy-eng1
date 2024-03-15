@@ -20,44 +20,44 @@ public class ScoreCalculator {
      * difficulty range too.
      * </p>
      *
-     * @param  energy The first variable to affect the score. Represents
-     *                student's energy.
-     * @param max_energy The maximum value that energy could've been.
-     * @param study_time The second variable to affect the score. Represents
+     * @param energy The first variable to affect the score. Represents
+     *               student's energy.
+     * @param maxEnergy The maximum value that energy could've been.
+     * @param studyTime The second variable to affect the score. Represents
      *                   the time spent by the student studying.
-     * @param max_study_time The maximum time that the student could've
+     * @param maxStudyTime The maximum time that the student could've
      *                       studied.
      * @param difficulty The difficulty level set.
-     * @param max_difficulty The maximum difficulty the game could've been set
+     * @param maxDifficulty The maximum difficulty the game could've been set
      *                       to.
      * @return An int score out of 100 calculated with the given variable.
      */
-    public static int calculateScore(float energy, float max_energy, float study_time,
-                                     float max_study_time, int difficulty,
-                                     int max_difficulty) {
-        float energy_score = Math.min(energy / max_energy, 1.0f) * 100;
-        float study_score = Math.min(study_time / max_study_time, 1.0f) * 100;
+    public static int calculateScore(float energy, float maxEnergy, float studyTime,
+                                     float maxStudyTime, int difficulty,
+                                     int maxDifficulty) {
+        float energyScore = Math.min(energy / maxEnergy, 1.0f) * 100;
+        float studyScore = Math.min(studyTime / maxStudyTime, 1.0f) * 100;
 
-        float difficulty_score = (float) difficulty / (float) max_difficulty;
+        float difficultyScore = (float) difficulty / (float) maxDifficulty;
 
-        double percent_score_double = Math.min(
+        double percentScoreDouble = Math.min(
                 (200.0f * (1.0f
-                    - 10.0f * (1.0f / (energy_score + 20.0f)
-                        + 1.0f / (study_score + 20.0f))))
-                / (1.4 + difficulty_score * (0.26f))
+                    - 10.0f * (1.0f / (energyScore + 20.0f)
+                        + 1.0f / (studyScore + 20.0f))))
+                / (1.4 + difficultyScore * (0.26f))
                 , 100.0f);
 
-        int percent_score_int = (int) Math.round(percent_score_double);
+        int percentScoreInt = (int) Math.round(percentScoreDouble);
 
-        return percent_score_int;
+        return percentScoreInt;
     }
 
-    public static int calculateScore(int energy, int max_energy, int study_time,
-                                     int max_study_time, int difficulty,
-                                     int max_difficulty) {
+    public static int calculateScore(int energy, int maxEnergy, int studyTime,
+                                     int maxStudyTime, int difficulty,
+                                     int maxDifficulty) {
         return calculateScore(
-                (float) energy, (float) max_energy, (float) study_time,
-                (float) max_study_time, difficulty, max_difficulty
+                (float) energy, (float) maxEnergy, (float) studyTime,
+                (float) maxStudyTime, difficulty, maxDifficulty
         );
     }
 
