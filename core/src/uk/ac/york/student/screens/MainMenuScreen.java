@@ -1,9 +1,11 @@
 package uk.ac.york.student.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import lombok.Getter;
@@ -30,6 +35,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 
@@ -42,7 +48,7 @@ public class MainMenuScreen extends BaseScreen {
     private final Texture vignetteTexture = new Texture(Gdx.files.internal("images/Vignette.png"));
     private final Texture cookeLogo = new Texture(Gdx.files.internal("images/logo/b/logo.png"));
     private final Texture clouds = new Texture(Gdx.files.internal("images/CloudsFormatted.png"));
-    private final Image cloudsImage = new Image(clouds);
+    private final Image cloudsImage = new Image(new TextureRegionDrawable(new TextureRegion(clouds)));
     private final Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
     private final GameSound buttonClick = SoundManager.getSupplierSounds().getResult(Sounds.BUTTON_CLICK);
 
@@ -62,6 +68,7 @@ public class MainMenuScreen extends BaseScreen {
         this.fadeInTime = fadeInTime;
         processor = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(processor);
+        executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
     public enum Direction {
@@ -94,13 +101,22 @@ public class MainMenuScreen extends BaseScreen {
         ));
     }
 
-    public void fadeOut(@NotNull Actor actor) {
-        int duration = 1;
-        actor.setOrigin(Align.center);
-        actor.addAction(Actions.fadeOut(duration));
-    }
+    private final AtomicReference<Float> alpha = new AtomicReference<>(1f);
+    private final ScheduledExecutorService executorService;
 
-    private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    public void fadeOut() {
+        int duration = 1;
+        long totalReductions = (long) (1/0.01);
+        long period = (duration * 1000) / totalReductions;
+        TimeUnit timeUnit = TimeUnit.SECONDS;
+        ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(() -> {
+            alpha.updateAndGet(v -> v <= 0 ? 0 : v - 0.01f);
+        }, 0, period, TimeUnit.MILLISECONDS);
+
+        executorService.schedule(() -> {
+            scheduledFuture.cancel(true);
+        }, duration, timeUnit);
+    }
 
     @Override
     public void show() {
@@ -156,7 +172,7 @@ public class MainMenuScreen extends BaseScreen {
                 zoomAndMove(preferencesButton, Direction.DOWN);
                 zoomAndMove(exitButton, Direction.DOWN);
                 zoomAndMove(cookeLogoImage, Direction.UP);
-                fadeOut(cloudsImage);
+                fadeOut();
 
                 Wait.async(1500, TimeUnit.MILLISECONDS)
                     .thenRun(() -> Gdx.app.postRunnable(() -> game.setScreen(Screens.GAME)));
@@ -193,6 +209,8 @@ public class MainMenuScreen extends BaseScreen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         // draw MapOverview.png as background
         Batch batch = processor.getBatch();
@@ -223,10 +241,11 @@ public class MainMenuScreen extends BaseScreen {
             // render cloudsImage
             cloudsImage.setPosition(cycle, 0);
             // draw with respect to fade out alpha
-            cloudsImage.draw(batch, cloudsImage.getColor().a);
+            cloudsImage.draw(batch, alpha.get());
 
+            // render 2nd clouds Image
             cloudsImage.setPosition(cycle - width, 0);
-            cloudsImage.draw(batch, cloudsImage.getColor().a);
+            cloudsImage.draw(batch, alpha.get());
         }
 
 
@@ -281,5 +300,6 @@ public class MainMenuScreen extends BaseScreen {
         cookeLogo.dispose();
         clouds.dispose();
         buttonClick.dispose();
+        executorService.shutdown();
     }
 }
