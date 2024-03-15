@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
-public class PlayerScore {
+public final class PlayerScore {
     /**
      * Calculate a score for the student/player.
      * <p>
