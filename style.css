@@ -83,6 +83,12 @@ h4 {
     margin-top: 20px;
 }
 
+h5{
+    color: #333;
+    font-size: 1em;
+    font-style: italic;
+}
+
 /* Footer styling */
 footer {
     background-color: orangered;
@@ -114,7 +120,7 @@ section {
 }
 
 .photo-column img {
-    width: 400px;
+    width: 300px;
     height: auto;
 }
 .photo-column {
