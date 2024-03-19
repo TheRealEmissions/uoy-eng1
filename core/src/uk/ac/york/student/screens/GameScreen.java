@@ -163,7 +163,7 @@ public class GameScreen extends BaseScreen implements InputProcessor {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int screenWidth, int screenHeight) {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
         int tileWidth = layer.getTileWidth();
         int tileHeight = layer.getTileHeight();
@@ -174,6 +174,7 @@ public class GameScreen extends BaseScreen implements InputProcessor {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
 
+        processor.getViewport().update(screenWidth, screenHeight, true);
 
         // Calculate the player's position (center of the player's sprite)
         float playerCenterX = player.getX() + player.getWidth() / 2;
