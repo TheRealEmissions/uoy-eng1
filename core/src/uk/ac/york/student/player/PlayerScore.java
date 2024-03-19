@@ -1,11 +1,9 @@
 package uk.ac.york.student.player;
 
-import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-@UtilityClass
-public final class PlayerScore {
+public interface PlayerScore {
     /**
      * Calculate a score for the student/player.
      * <p>
@@ -31,9 +29,9 @@ public final class PlayerScore {
      *                       to.
      * @return An int score out of 100 calculated with the given variable.
      */
-    public static int calculate(float energy, float maxEnergy, float studyTime,
-                                float maxStudyTime, int difficulty,
-                                int maxDifficulty) {
+    default int calculateScore(float energy, float maxEnergy, float studyTime,
+                               float maxStudyTime, int difficulty,
+                               int maxDifficulty) {
         float energyScore = Math.min(energy / maxEnergy, 1.0f) * 100;
         float studyScore = Math.min(studyTime / maxStudyTime, 1.0f) * 100;
 
@@ -49,10 +47,10 @@ public final class PlayerScore {
         return (int) Math.round(percentScoreDouble);
     }
 
-    public static int calculate(int energy, int maxEnergy, int studyTime,
-                                int maxStudyTime, int difficulty,
-                                int maxDifficulty) {
-        return calculate(
+    default int calculateScore(int energy, int maxEnergy, int studyTime,
+                                     int maxStudyTime, int difficulty,
+                                     int maxDifficulty) {
+        return calculateScore(
                 (float) energy, (float) maxEnergy, (float) studyTime,
                 (float) maxStudyTime, difficulty, maxDifficulty
         );
@@ -62,7 +60,7 @@ public final class PlayerScore {
      * Output an associated degree class given a score (out of 100).
      */
     @Contract(pure = true)
-    public static @NotNull String convertToString(int score) {
+    default @NotNull String convertScoreToString(int score) {
         if (score >= 70) {
             return "First-class Honours";
         } else if (score >= 60) {

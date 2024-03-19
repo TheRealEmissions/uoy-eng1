@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="9">
  <tileset firstgid="1" source="interior.tsx"/>
  <layer id="4" name="room" width="30" height="20">
   <data encoding="csv">
@@ -169,4 +169,42 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="12" name="gameObjects">
+  <object id="1" name="cookFood" x="224.057" y="112.193" width="16" height="16">
+   <properties>
+    <property name="activityType" value="hunger"/>
+    <property name="isActivity" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="2" name="getFood" x="271.764" y="111.864" width="16" height="16">
+   <properties>
+    <property name="activityType" value="hunger"/>
+    <property name="isActivity" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="4" name="studyAtDesk" x="160.558" y="223.728" width="32" height="32">
+   <properties>
+    <property name="activityType" value="study"/>
+    <property name="isActivity" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="5" name="watchFish" x="175.693" y="207.278" width="32" height="14">
+   <properties>
+    <property name="activityType" value="social"/>
+    <property name="isActivity" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="6" name="sleep" x="273.08" y="190.827" width="30.9272" height="35.5333">
+   <properties>
+    <property name="activityType" value="sleep"/>
+    <property name="isActivity" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="7" name="nap" x="160.887" y="119.102" width="16.1216" height="41.1265">
+   <properties>
+    <property name="activityType" value="sleep"/>
+    <property name="isActivity" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

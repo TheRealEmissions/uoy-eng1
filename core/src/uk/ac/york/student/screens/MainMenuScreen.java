@@ -112,9 +112,7 @@ public class MainMenuScreen extends BaseScreen {
             alpha.updateAndGet(v -> v <= 0 ? 0 : v - 0.01f);
         }, 0, period, TimeUnit.MILLISECONDS);
 
-        executorService.schedule(() -> {
-            scheduledFuture.cancel(true);
-        }, duration, timeUnit);
+        executorService.schedule(() -> scheduledFuture.cancel(true), duration, timeUnit);
     }
 
     @Override
