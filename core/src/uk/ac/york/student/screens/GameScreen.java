@@ -68,7 +68,7 @@ public class GameScreen extends BaseScreen implements InputProcessor {
     }
 
     @Override
-    public void resize(int i, int i1) {
+    public void resize(int screenWidth, int screenHeight) {
 
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
         int tileWidth = layer.getTileWidth();
@@ -76,7 +76,7 @@ public class GameScreen extends BaseScreen implements InputProcessor {
         float scale = Math.max(Gdx.graphics.getWidth() / (layer.getWidth() * tileWidth), Gdx.graphics.getHeight() / (layer.getHeight() * tileHeight));
         renderer = new OrthogonalTiledMapRenderer(map, scale);
 
-        processor.getViewport().update(i, i1, true);
+        processor.getViewport().update(screenWidth, screenHeight, true);
     }
 
     @Override
