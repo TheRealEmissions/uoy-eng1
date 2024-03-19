@@ -1,16 +1,11 @@
 package uk.ac.york.student.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import lombok.Getter;
 import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-@Getter
 @UtilityClass
 /**
  * A utility class to store the classes of the different screens loaded with reflection.
@@ -39,5 +34,19 @@ public final class Screens {
                 Gdx.app.error("Screens", "Could not find class " + path);
             }
         }
+    }
+
+    public static @Nullable Class<? extends BaseScreen> valueOf(String name) {
+        Field[] fields = Screens.class.getFields();
+        for (Field field : fields) {
+            if (field.getName().equals(name)) {
+                try {
+                    return (Class<? extends BaseScreen>) field.get(null);
+                } catch (IllegalAccessException e) {
+                    Gdx.app.error("Screens", "Could not access field " + name);
+                }
+            }
+        }
+        return null;
     }
 }
