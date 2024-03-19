@@ -2,6 +2,7 @@ package uk.ac.york.student.audio.sound.elements;
 
 import uk.ac.york.student.audio.sound.GameSound;
 import uk.ac.york.student.settings.GamePreferences;
+import uk.ac.york.student.settings.SoundPreferences;
 
 public class ButtonClickSound extends GameSound {
     /**
@@ -13,7 +14,7 @@ public class ButtonClickSound extends GameSound {
 
     @Override
     public long play() {
-        GamePreferences.SoundPreferences soundPreferences = (GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference();
+        SoundPreferences soundPreferences = (SoundPreferences) GamePreferences.SOUND.getPreference();
         if (soundPreferences.isEnabled()) {
             return super.play();
         } else {

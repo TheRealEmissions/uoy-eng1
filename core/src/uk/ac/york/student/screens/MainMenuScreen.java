@@ -1,7 +1,6 @@
 package uk.ac.york.student.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -28,7 +25,9 @@ import uk.ac.york.student.assets.skins.Skins;
 import uk.ac.york.student.audio.sound.GameSound;
 import uk.ac.york.student.audio.sound.SoundManager;
 import uk.ac.york.student.audio.sound.Sounds;
+import uk.ac.york.student.settings.DebugScreenPreferences;
 import uk.ac.york.student.settings.GamePreferences;
+import uk.ac.york.student.settings.MainMenuCloudsPreferences;
 import uk.ac.york.student.utils.Wait;
 
 import java.util.concurrent.Executors;
@@ -52,8 +51,8 @@ public class MainMenuScreen extends BaseScreen {
     private final Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
     private final GameSound buttonClick = SoundManager.getSupplierSounds().getResult(Sounds.BUTTON_CLICK);
 
-    private final boolean cloudsEnabled = ((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).isEnabled();
-    private final float cloudsSpeed = ((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed();
+    private final boolean cloudsEnabled = ((MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).isEnabled();
+    private final float cloudsSpeed = ((MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed();
     public MainMenuScreen(GdxGame game) {
         this(game, false);
     }
@@ -127,7 +126,7 @@ public class MainMenuScreen extends BaseScreen {
 
         Table table = new Table();
         table.setFillParent(true);
-        if (((GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled()) {
+        if (((DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled()) {
             table.setDebug(true);
         }
         processor.addActor(table);

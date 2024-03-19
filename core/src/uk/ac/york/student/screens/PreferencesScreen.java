@@ -19,7 +19,7 @@ import uk.ac.york.student.audio.music.MusicManager;
 import uk.ac.york.student.audio.sound.GameSound;
 import uk.ac.york.student.audio.sound.SoundManager;
 import uk.ac.york.student.audio.sound.Sounds;
-import uk.ac.york.student.settings.GamePreferences;
+import uk.ac.york.student.settings.*;
 
 import java.util.function.Supplier;
 
@@ -135,7 +135,7 @@ public class PreferencesScreen extends BaseScreen {
         Slider cloudsSpeedSlider = screenData.cloudsSpeedSlider;
         Label cloudsSpeedLabel = screenData.cloudsSpeedLabel;
         cloudsSpeedSlider.addListener(event -> {
-            GamePreferences.MainMenuCloudsPreferences preference = (GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference();
+            MainMenuCloudsPreferences preference = (MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference();
             preference.setSpeed(cloudsSpeedSlider.getValue());
             cloudsSpeedLabel.setText(Labels.MAIN_MENU_CLOUDS_SPEED.getLabel(Math.round(cloudsSpeedSlider.getValue() * 100) + "%"));
             return false;
@@ -148,8 +148,8 @@ public class PreferencesScreen extends BaseScreen {
 
     private void createCloudsSpeedSlider() {
         screenData.cloudsSpeedSlider = new Slider(0f, 3f, 0.01f, false, craftacularSkin);
-        screenData.cloudsSpeedSlider.setVisualPercent(((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed());
-        screenData.cloudsSpeedSlider.setValue(((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed());
+        screenData.cloudsSpeedSlider.setVisualPercent(((MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed());
+        screenData.cloudsSpeedSlider.setValue(((MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).getSpeed());
     }
 
     private void listenCloudsToggle() {
@@ -158,7 +158,7 @@ public class PreferencesScreen extends BaseScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 buttonClick.play();
-                GamePreferences.MainMenuCloudsPreferences preference = (GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference();
+                MainMenuCloudsPreferences preference = (MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference();
                 boolean nowEnabled = !preference.isEnabled();
                 preference.setEnabled(nowEnabled);
                 cloudsToggleButton.setText(Labels.MAIN_MENU_CLOUDS_ENABLED.getLabel(nowEnabled ? "ON" : "OFF"));
@@ -167,7 +167,7 @@ public class PreferencesScreen extends BaseScreen {
     }
 
     private void createCloudsToggleButton() {
-        screenData.cloudsToggleButton = new TextButton(Labels.MAIN_MENU_CLOUDS_ENABLED.getLabel(((GamePreferences.MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+        screenData.cloudsToggleButton = new TextButton(Labels.MAIN_MENU_CLOUDS_ENABLED.getLabel(((MainMenuCloudsPreferences) GamePreferences.MAIN_MENU_CLOUDS.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
     }
 
     private void createBackButton() {
@@ -175,7 +175,7 @@ public class PreferencesScreen extends BaseScreen {
     }
 
     private void createDebugScreenToggleButton() {
-        screenData.debugScreenToggleButton = new TextButton(Labels.DEBUG_SCREEN_ENABLED.getLabel(((GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+        screenData.debugScreenToggleButton = new TextButton(Labels.DEBUG_SCREEN_ENABLED.getLabel(((DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
     }
 
     private void createSoundVolumeLabel() {
@@ -184,11 +184,11 @@ public class PreferencesScreen extends BaseScreen {
 
     private void createSoundVolumeSlider() {
         screenData.soundVolumeSlider = new Slider(0f, 1f, 0.01f, false, craftacularSkin);
-        screenData.soundVolumeSlider.setVisualPercent(((GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference()).getVolume());
+        screenData.soundVolumeSlider.setVisualPercent(((SoundPreferences) GamePreferences.SOUND.getPreference()).getVolume());
     }
 
     private void createSoundToggleButton() {
-        screenData.soundToggleButton = new TextButton(Labels.SOUND_ENABLED.getLabel(((GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+        screenData.soundToggleButton = new TextButton(Labels.SOUND_ENABLED.getLabel(((SoundPreferences) GamePreferences.SOUND.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
     }
 
     private void createMusicVolumeLabel() {
@@ -197,11 +197,11 @@ public class PreferencesScreen extends BaseScreen {
 
     private void createMusicVolumeSlider() {
         screenData.musicVolumeSlider = new Slider(0f, 1f, 0.01f, false, craftacularSkin);
-        screenData.musicVolumeSlider.setVisualPercent(((GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference()).getVolume());
+        screenData.musicVolumeSlider.setVisualPercent(((MusicPreferences) GamePreferences.MUSIC.getPreference()).getVolume());
     }
 
     private void createMusicToggleButton() {
-        screenData.musicToggleButton = new TextButton(Labels.MUSIC_ENABLED.getLabel(((GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
+        screenData.musicToggleButton = new TextButton(Labels.MUSIC_ENABLED.getLabel(((MusicPreferences) GamePreferences.MUSIC.getPreference()).isEnabled() ? "ON" : "OFF"), craftacularSkin);
     }
 
     private void listenBackButton() {
@@ -229,7 +229,7 @@ public class PreferencesScreen extends BaseScreen {
         Label cloudsSpeedLabel = screenData.cloudsSpeedLabel;
 
         table.setFillParent(true);
-        if (((GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled()) {
+        if (((DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference()).isEnabled()) {
             table.setDebug(true);
         }
         table.setSkin(craftacularSkin);
@@ -291,7 +291,7 @@ public class PreferencesScreen extends BaseScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 buttonClick.play();
-                GamePreferences.DebugScreenPreferences preference = (GamePreferences.DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference();
+                DebugScreenPreferences preference = (DebugScreenPreferences) GamePreferences.DEBUG_SCREEN.getPreference();
                 boolean nowEnabled = !preference.isEnabled();
                 preference.setEnabled(nowEnabled);
                 game.setScreen(Screens.PREFERENCES);
@@ -303,7 +303,7 @@ public class PreferencesScreen extends BaseScreen {
         Slider soundVolumeSlider = screenData.soundVolumeSlider;
         Label soundVolumeLabel = screenData.soundVolumeLabel;
         soundVolumeSlider.addListener(event -> {
-            GamePreferences.SoundPreferences preference = (GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference();
+            SoundPreferences preference = (SoundPreferences) GamePreferences.SOUND.getPreference();
             preference.setVolume(soundVolumeSlider.getValue());
             soundVolumeLabel.setText(Labels.SOUND_VOLUME.getLabel(Math.round(soundVolumeSlider.getValue() * 100) + "%"));
             return false;
@@ -315,7 +315,7 @@ public class PreferencesScreen extends BaseScreen {
         soundToggleButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                GamePreferences.SoundPreferences preference = (GamePreferences.SoundPreferences) GamePreferences.SOUND.getPreference();
+                SoundPreferences preference = (SoundPreferences) GamePreferences.SOUND.getPreference();
                 boolean nowEnabled = !preference.isEnabled();
                 preference.setEnabled(nowEnabled);
                 soundToggleButton.setText(Labels.SOUND_ENABLED.getLabel(nowEnabled ? "ON" : "OFF"));
@@ -328,7 +328,7 @@ public class PreferencesScreen extends BaseScreen {
         Slider musicVolumeSlider = screenData.musicVolumeSlider;
         Label musicVolumeLabel = screenData.musicVolumeLabel;
         musicVolumeSlider.addListener(event -> {
-            GamePreferences.MusicPreferences preference = (GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference();
+            MusicPreferences preference = (MusicPreferences) GamePreferences.MUSIC.getPreference();
             preference.setVolume(musicVolumeSlider.getValue());
             MusicManager.BACKGROUND_MUSIC.setVolume(musicVolumeSlider.getValue());
             musicVolumeLabel.setText(Labels.MUSIC_VOLUME.getLabel(Math.round(musicVolumeSlider.getValue() * 100) + "%"));
@@ -342,7 +342,7 @@ public class PreferencesScreen extends BaseScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 buttonClick.play();
-                GamePreferences.MusicPreferences preference = (GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference();
+                MusicPreferences preference = (MusicPreferences) GamePreferences.MUSIC.getPreference();
                 boolean nowEnabled = !preference.isEnabled();
                 preference.setEnabled(nowEnabled);
                 musicToggleButton.setText(Labels.MUSIC_ENABLED.getLabel(nowEnabled ? "ON" : "OFF"));

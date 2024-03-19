@@ -1,10 +1,10 @@
 package uk.ac.york.student.audio.music;
 
 import lombok.Getter;
-import lombok.experimental.UtilityClass;
 import uk.ac.york.student.audio.AudioManager;
 import uk.ac.york.student.audio.music.elements.BackgroundMusic;
 import uk.ac.york.student.settings.GamePreferences;
+import uk.ac.york.student.settings.MusicPreferences;
 
 /**
  * Singleton class that manages the music for the game
@@ -32,7 +32,7 @@ public class MusicManager implements AudioManager {
      */
     @Override
     public void onEnable() {
-        GamePreferences.MusicPreferences musicPreferences = (GamePreferences.MusicPreferences) GamePreferences.MUSIC.getPreference();
+        MusicPreferences musicPreferences = (MusicPreferences) GamePreferences.MUSIC.getPreference();
         if (musicPreferences.isEnabled()) {
             BACKGROUND_MUSIC.setLooping(true);
             BACKGROUND_MUSIC.play();

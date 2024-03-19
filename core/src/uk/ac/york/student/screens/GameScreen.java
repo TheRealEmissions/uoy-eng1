@@ -1,6 +1,7 @@
 package uk.ac.york.student.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,10 +18,12 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import lombok.Getter;
 import uk.ac.york.student.GdxGame;
 
-public class GameScreen extends BaseScreen {
+import java.util.List;
+
+public class GameScreen extends BaseScreen implements InputProcessor {
     @Getter
     private final Stage processor;
-    private TiledMap map;
+    private final TiledMap map;
     private TiledMapRenderer renderer;
     public GameScreen(GdxGame game) {
         super(game);
@@ -57,7 +60,6 @@ public class GameScreen extends BaseScreen {
         OrthographicCamera camera = (OrthographicCamera) processor.getCamera();
         camera.update();
 
-        // render map and make it 2x bigger than screen size
         renderer.setView(camera);
         renderer.render();
 
@@ -95,5 +97,50 @@ public class GameScreen extends BaseScreen {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
     }
 }
