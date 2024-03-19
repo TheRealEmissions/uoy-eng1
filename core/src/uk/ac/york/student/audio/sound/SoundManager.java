@@ -3,7 +3,7 @@ package uk.ac.york.student.audio.sound;
 import lombok.Getter;
 import uk.ac.york.student.audio.AudioManager;
 import uk.ac.york.student.audio.sound.elements.ButtonClickSound;
-import uk.ac.york.student.utils.EnumSupplierMap;
+import uk.ac.york.student.utils.EnumMapOfSuppliers;
 
 import java.util.EnumMap;
 import java.util.function.Supplier;
@@ -22,7 +22,7 @@ public class SoundManager implements AudioManager {
     @Getter
     private static final EnumMap<Sounds, GameSound> sounds = new EnumMap<>(Sounds.class);
     @Getter
-    private static final EnumSupplierMap<Sounds, GameSound> supplierSounds = new EnumSupplierMap<>(Sounds.class);
+    private static final EnumMapOfSuppliers<Sounds, GameSound> supplierSounds = new EnumMapOfSuppliers<>(Sounds.class);
     static {
         sounds.put(Sounds.BUTTON_CLICK, buttonClickSound.get());
         supplierSounds.put(Sounds.BUTTON_CLICK, buttonClickSound);
