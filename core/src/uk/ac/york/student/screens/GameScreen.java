@@ -21,32 +21,36 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import uk.ac.york.student.GdxGame;
 import uk.ac.york.student.assets.skins.SkinManager;
 import uk.ac.york.student.assets.skins.Skins;
+import uk.ac.york.student.map.ActionMapObject;
+import uk.ac.york.student.map.ActivityMapObject;
+import uk.ac.york.student.map.MapManager;
+import uk.ac.york.student.map.TransitionMapObject;
 import uk.ac.york.student.player.Player;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class GameScreen extends BaseScreen implements InputProcessor {
+    private static final int ACTION_KEY = Input.Keys.E;
     @Getter
     private final Stage processor;
     private final Player player;
-    private final TiledMap map;
+    private TiledMap map = MapManager.getMaps().getResult("map");
     private float mapScale;
     private TiledMapRenderer renderer;
     private final Skin craftacularSkin = SkinManager.getSkins().getResult(Skins.CRAFTACULAR);
-    private final int actionKey = Input.Keys.E;
     private final Table table = new Table(craftacularSkin);
-    private Label actionLabel = new Label("ENG1 Project. Super cool. (You will never see this)", craftacularSkin);
+    private final Label actionLabel = new Label("ENG1 Project. Super cool. (You will never see this)", craftacularSkin);
     public GameScreen(GdxGame game) {
         super(game);
 
         // Set up the tilemap
         // Cannot extract into a method because class variables are set as final
         //#region Load Tilemap
-        TmxMapLoader.Parameters parameter = new TmxMapLoader.Parameters();
-        parameter.textureMinFilter = Texture.TextureFilter.Nearest;
-        parameter.textureMagFilter = Texture.TextureFilter.Nearest;
-        map = new TmxMapLoader().load("map/map.tmx", parameter);
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
         int tileWidth = layer.getTileWidth();
         int tileHeight = layer.getTileHeight();
@@ -89,6 +93,35 @@ public class GameScreen extends BaseScreen implements InputProcessor {
         });
     }
 
+    public void changeMap(String mapName) {
+        map.dispose();
+        map = MapManager.getMaps().getResult(mapName);
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        int tileWidth = layer.getTileWidth();
+        int tileHeight = layer.getTileHeight();
+        mapScale = Math.max(Gdx.graphics.getWidth() / (layer.getWidth() * tileWidth), Gdx.graphics.getHeight() / (layer.getHeight() * tileHeight));
+        renderer = new OrthogonalTiledMapRenderer(map, mapScale);
+
+        Vector2 startingPoint = new Vector2(25, 25);
+        MapLayer gameObjectsLayer = map.getLayers().get("gameObjects");
+        MapObjects objects = gameObjectsLayer.getObjects();
+        for (MapObject object : objects) {
+            if (!object.getName().equals("startingPoint")) continue;
+            MapProperties properties = object.getProperties();
+            if (!properties.containsKey("spawnpoint")) continue;
+            Boolean spawnpoint = properties.get("spawnpoint", Boolean.class);
+            if (spawnpoint == null || Boolean.FALSE.equals(spawnpoint)) continue;
+            RectangleMapObject rectangleObject = (RectangleMapObject) object;
+            Rectangle rectangle = rectangleObject.getRectangle();
+            startingPoint = new Vector2(rectangle.getX() * mapScale, rectangle.getY() * mapScale);
+            break;
+        }
+
+        player.setPosition(startingPoint);
+        player.setMap(map);
+
+    }
+
     @Override
     public void show() {
         float width = Gdx.graphics.getWidth();
@@ -107,6 +140,8 @@ public class GameScreen extends BaseScreen implements InputProcessor {
         processor.getViewport().update((int) width, (int) height);
 
     }
+
+    private final AtomicReference<@Nullable ActionMapObject> currentActionMapObject = new AtomicReference<>(null);
 
     @Override
     public void render(float v) {
@@ -144,22 +179,38 @@ public class GameScreen extends BaseScreen implements InputProcessor {
 
         Player.Transition transitionTile = player.isInTransitionTile();
         if (transitionTile != null) {
-            MapObject tileObject = player.getCurrentMapObject();
-            assert tileObject != null;
-            String actionText = "Press " + Input.Keys.toString(actionKey) + " to ";
-            if (transitionTile.equals(Player.Transition.ACTIVITY)) {
-                actionText += tileObject.getProperties().get("activityStr", String.class);
-            } else if (transitionTile.equals(Player.Transition.NEW_MAP)) {
-                actionText += tileObject.getProperties().get("newMapStr", String.class);
-            }
+            ActionMapObject actionMapObject = getActionMapObject(transitionTile, player.getCurrentMapObject());
+            currentActionMapObject.set(actionMapObject);
+            String actionText = getActionText(actionMapObject);
             actionLabel.setText(actionText);
             table.add(actionLabel);
         } else {
+            currentActionMapObject.set(null);
             table.clearChildren();
         }
 
         processor.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         processor.draw();
+    }
+
+    @NotNull
+    private String getActionText(ActionMapObject actionMapObject) {
+        String actionText = "Press " + Input.Keys.toString(ACTION_KEY) + " to ";
+        actionText += actionMapObject.getStr();
+        return actionText;
+    }
+
+    @NotNull
+    private static ActionMapObject getActionMapObject(Player.@NotNull Transition transitionTile, MapObject tileObject) {
+        ActionMapObject actionMapObject;
+        if (transitionTile.equals(Player.Transition.ACTIVITY)) {
+            actionMapObject = new ActivityMapObject(tileObject);
+        } else if (transitionTile.equals(Player.Transition.NEW_MAP)) {
+            actionMapObject = new TransitionMapObject(tileObject);
+        } else {
+            throw new IllegalStateException("Unexpected value: " + transitionTile);
+        }
+        return actionMapObject;
     }
 
     @Override
@@ -171,8 +222,8 @@ public class GameScreen extends BaseScreen implements InputProcessor {
         renderer = new OrthogonalTiledMapRenderer(map, mapScale);
 
         OrthographicCamera camera = (OrthographicCamera) processor.getCamera();
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
+        camera.viewportWidth = screenWidth;
+        camera.viewportHeight = screenHeight;
 
         processor.getViewport().update(screenWidth, screenHeight, true);
 
@@ -192,7 +243,7 @@ public class GameScreen extends BaseScreen implements InputProcessor {
 
         renderer.setView(camera);
 
-        processor.getViewport().update(width, height, true);
+        processor.getViewport().update(screenWidth, screenHeight, true);
     }
 
     @Override
@@ -214,11 +265,27 @@ public class GameScreen extends BaseScreen implements InputProcessor {
     public void dispose() {
         map.dispose();
         processor.dispose();
+        craftacularSkin.dispose();
+        player.dispose();
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        return player.keyDown(keycode);
+        boolean playerKeyDown = player.keyDown(keycode);
+        if (keycode == ACTION_KEY) {
+            ActionMapObject actionMapObject = currentActionMapObject.get();
+            if (actionMapObject != null) {
+                if (actionMapObject instanceof ActivityMapObject) {
+
+                } else if (actionMapObject instanceof TransitionMapObject) {
+                    TransitionMapObject transitionMapObject = (TransitionMapObject) actionMapObject;
+                    changeMap(transitionMapObject.getType());
+                } else {
+                    throw new IllegalStateException("Unexpected value: " + actionMapObject);
+                }
+            }
+        }
+        return playerKeyDown;
     }
 
     @Override

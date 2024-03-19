@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,8 +26,8 @@ import java.util.Map;
 @Getter
 public class Player extends Actor implements PlayerScore, InputProcessor {
     private float mapScale;
-    private final Sprite sprite;
-    private final TiledMap map;
+    private Sprite sprite;
+    private TiledMap map;
     private final TextureAtlas textureAtlas = new TextureAtlas("sprite-atlases/character-sprites.atlas");
     public Player(@NotNull TiledMap map, @NotNull Vector2 startPosition) {
         super();
@@ -44,6 +45,22 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
         loadMapObjectBoundingBoxes();
     }
 
+    public void setMap(@NotNull TiledMap map) {
+        this.map = map;
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        final int maxHeight = layer.getHeight() * layer.getTileHeight();
+        final int maxWidth = layer.getWidth() * layer.getTileWidth();
+        mapScale = Math.max(Gdx.graphics.getWidth() / maxWidth, Gdx.graphics.getHeight() / maxHeight);
+        sprite = textureAtlas.createSprite("char3_left");
+        sprite.setAlpha(1);
+        // scale sprite
+        sprite.setSize(sprite.getWidth() * mapScale, sprite.getHeight() * mapScale);
+        setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
+        tileObjectBoundingBoxes.clear();
+        loadMapObjectBoundingBoxes();
+
+    }
+
     @Getter
     private enum Movement {
         UP, DOWN, LEFT, RIGHT, BOOST;
@@ -53,17 +70,6 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
         void set(boolean is) {
             this.is = is;
         }
-    }
-
-    /**
-     * todo: fix this
-     * @param scale the scale to resize the sprite to
-     */
-    public void resize(float scale) {
-        sprite.setSize(sprite.getWidth() * scale, sprite.getHeight() * scale);
-        sprite.setPosition(sprite.getX() * scale, sprite.getY() * scale);
-        mapScale = scale;
-        setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
     }
 
     public void move() {
@@ -134,6 +140,11 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
             }
         }
         return null;
+    }
+
+    public void setPosition(Vector2 position) {
+        sprite.setPosition(position.x, position.y);
+        setPosition(position.x, position.y);
     }
 
     public @Nullable Transition isInTransitionTile() {
