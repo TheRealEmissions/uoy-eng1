@@ -14,5 +14,5 @@ public interface ActionMapObject {
      * Gets the type of the action
      * @return the type of the action
      */
-    String getType();
+    Object getType();
 }
