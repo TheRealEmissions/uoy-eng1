@@ -26,7 +26,7 @@ public class DesktopLauncher {
 		config.setHdpiMode(HdpiMode.Logical); // Convert coordinates to be logical (scaled to 1920x1080)
 		config.setTitle("ENG1");
 		config.setIdleFPS(15); // Ensure game doesn't take up unnecessary resources when idle
-		config.setResizable(false); // Disabled until resizing is properly implemented
+		config.setResizable(true);
 		config.setInitialBackgroundColor(Color.WHITE);
 		new Lwjgl3Application(new GdxGame(), config);
 	}
