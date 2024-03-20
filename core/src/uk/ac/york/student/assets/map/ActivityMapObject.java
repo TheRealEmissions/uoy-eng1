@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import uk.ac.york.student.game.activities.Activity;
+import uk.ac.york.student.player.Player;
 import uk.ac.york.student.player.PlayerMetrics;
 
 import java.util.Arrays;
@@ -47,6 +48,19 @@ public final class ActivityMapObject extends MapObject implements ActionMapObjec
      */
     @Getter
     private final @Unmodifiable List<Float> changeAmounts;
+
+    /**
+     * Returns the change amount for the specified {@link PlayerMetrics.MetricType}.
+     * This method retrieves the index of the specified {@link PlayerMetrics.MetricType} in the {@link Activity#getEffects()} of the {@link Activity}.
+     * It then returns the change amount at that index in {@link Activity#getEffects()}.
+     * The change amount represents the amount by which the {@link Player}'s {@link PlayerMetrics} changes when performing the {@link Activity}.
+     *
+     * @param metricType the {@link PlayerMetrics.MetricType} to get the change amount for
+     * @return the change amount for the specified {@link PlayerMetrics.MetricType}
+     */
+    public float getChangeAmount(PlayerMetrics.MetricType metricType) {
+        return changeAmounts.get(type.indexOf(metricType));
+    }
 
     /**
      * Constructor for the ActivityMapObject class.
