@@ -4,6 +4,13 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
+import uk.ac.york.student.game.activities.Activity;
+import uk.ac.york.student.player.PlayerMetrics;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class extends MapObject and implements ActionMapObject.
@@ -25,13 +32,21 @@ public final class ActivityMapObject extends MapObject implements ActionMapObjec
      * String representing the type of the activity
      */
     @Getter
-    private final String type;
+    private final Activity type;
 
     /**
      * Integer representing how long the activity takes (in hours)
      */
     @Getter
     private final int time;
+
+    /**
+     * An {@link Unmodifiable} {@link List} of {@link Float}s representing the amounts by which the player's metrics change when performing the activity.
+     * Each {@link Float} corresponds to a specific metric, in the order they are defined in the {@link PlayerMetrics.MetricType} enum.
+     * The amounts are retrieved from the "changeAmount" property of the {@link MapObject}, which is a comma-separated string of floats.
+     */
+    @Getter
+    private final @Unmodifiable List<Float> changeAmounts;
 
     /**
      * Constructor for the ActivityMapObject class.
@@ -46,8 +61,11 @@ public final class ActivityMapObject extends MapObject implements ActionMapObjec
         setVisible(object.isVisible());
         properties = object.getProperties();
         str = properties.get("activityStr", String.class);
-        type = properties.get("activityType", String.class);
+        type = Activity.valueOf(properties.get("activityType", String.class).toUpperCase());
         time = properties.get("activityTime", Integer.class);
+        changeAmounts = Arrays.stream(properties.get("changeAmount", String.class).split(","))
+                            .map(Float::parseFloat)
+                            .collect(Collectors.toUnmodifiableList());
     }
 
     /**
