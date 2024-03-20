@@ -2,7 +2,6 @@ package uk.ac.york.student.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.york.student.utils.DrawableUtils;
@@ -13,7 +12,6 @@ public final class GameTime {
     private static final int WIDTH = 50;
     private static final int HEIGHT = 5;
 
-    @Getter
     private final ProgressBar progressBar;
 
     public GameTime(float scale) {
@@ -50,7 +48,6 @@ public final class GameTime {
         getProgressBar(scale);
     }
 
-    @Getter
     private int currentHour = 0;
 
     public void incrementHour() {
