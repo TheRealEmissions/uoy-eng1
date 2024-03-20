@@ -16,15 +16,16 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
 public class Player extends Actor implements PlayerScore, InputProcessor {
+    private final PlayerMetrics metrics = new PlayerMetrics();
     private float mapScale;
     private Sprite sprite;
     private TiledMap map;
@@ -58,7 +59,11 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
         setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
         tileObjectBoundingBoxes.clear();
         loadMapObjectBoundingBoxes();
+    }
 
+    public void setMap(@NotNull TiledMap map, Vector2 startPosition) {
+        setMap(map);
+        setPosition(startPosition);
     }
 
     @Getter
@@ -79,7 +84,7 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
         final float maxHeightScaled = maxHeight * mapScale;
         final float maxWidthScaled = maxWidth * mapScale;
 
-        final int amount = Movement.BOOST.is ? 4 : 2;
+        final float amount = (Movement.BOOST.is ? 2 : 1) * mapScale;
         if (Movement.UP.is && (sprite.getY() + sprite.getHeight() < maxHeightScaled)) {
             sprite.translateY(amount);
             setY(sprite.getY());
@@ -96,6 +101,10 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
             sprite.translateX(amount);
             setX(sprite.getX());
         }
+    }
+
+    public Vector2 getCenter() {
+        return new Vector2(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
     }
 
     public enum Transition {
@@ -128,6 +137,8 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
     public void loadMapObjectBoundingBoxes() {
         MapObjects objects = getMapObjects();
         for (MapObject object : objects) {
+            Boolean actionable = object.getProperties().get("actionable", Boolean.class);
+            if (Boolean.FALSE.equals(actionable)) continue;
             BoundingBox boundingBox = getTileObjectBoundingBox(object);
             tileObjectBoundingBoxes.put(object, boundingBox);
         }
@@ -135,14 +146,15 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
 
     public @Nullable MapObject getCurrentMapObject() {
         for (Map.Entry<MapObject, BoundingBox> entry : tileObjectBoundingBoxes.entrySet()) {
-            if (entry.getValue().contains(new Vector3(sprite.getX(), sprite.getY(), 0))) {
+            Vector2 center = getCenter();
+            if (entry.getValue().contains(new Vector3(center.x, center.y, 0))) {
                 return entry.getKey();
             }
         }
         return null;
     }
 
-    public void setPosition(Vector2 position) {
+    public void setPosition(@NotNull Vector2 position) {
         sprite.setPosition(position.x, position.y);
         setPosition(position.x, position.y);
     }
@@ -151,7 +163,6 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
         // if tile has property "isNewMap" or "isActivity" set to true, return true
         MapObject tileObject = getCurrentMapObject();
         if (tileObject == null) return null;
-        System.out.println(tileObject.getProperties());
         if (Boolean.TRUE.equals(tileObject.getProperties().get("isNewMap", Boolean.class))) {
             return Transition.NEW_MAP;
         } else if (Boolean.TRUE.equals(tileObject.getProperties().get("isActivity", Boolean.class))) {
@@ -251,5 +262,10 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
 
     public void dispose() {
         textureAtlas.dispose();
+        metrics.dispose();
+    }
+
+    public void setOpacity(@Range(from = 0, to = 1) float opacity) {
+        sprite.setAlpha(opacity);
     }
 }
