@@ -1,11 +1,9 @@
-package uk.ac.york.student.map;
+package uk.ac.york.student.assets.map;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.york.student.screens.BaseScreen;
-import uk.ac.york.student.screens.Screens;
 
 public class TransitionMapObject extends MapObject implements ActionMapObject {
     private final MapProperties properties;
