@@ -85,4 +85,22 @@ public enum Activity {
         }
         return null;
     }
+
+    /**
+     * Returns the index of the first occurrence of the specified {@link PlayerMetrics.MetricType} in {@link Activity#effects}.
+     * This method iterates over {@link Activity#effects}.
+     * If an effect with the specified {@link PlayerMetrics.MetricType} is found, the index of the effect in {@link Activity#effects} is returned.
+     * If no effect with the specified {@link PlayerMetrics.MetricType} is found, -1 is returned.
+     *
+     * @param metricType the {@link PlayerMetrics.MetricType} to find in {@link Activity#effects}
+     * @return the index of the first occurrence of the specified {@link PlayerMetrics.MetricType} in {@link Activity#effects}, or -1 if the {@link PlayerMetrics.MetricType} is not found
+     */
+    public int indexOf(PlayerMetrics.MetricType metricType) {
+        for (int i = 0; i < effects.size(); i++) {
+            if (effects.get(i).getLeft() == metricType) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
