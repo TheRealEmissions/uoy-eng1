@@ -13,6 +13,27 @@ import java.util.List;
  */
 @Getter
 public final class PlayerMetrics {
+
+    /**
+     * The {@link MetricType} enum represents the types of metrics related to a player.
+     * It includes {@link MetricType#ENERGY}, {@link MetricType#HAPPINESS}, and {@link MetricType#STUDY_LEVEL}.
+     */
+    public enum MetricType {
+        ENERGY,      // Represents the energy level of the player
+        HAPPINESS,   // Represents the happiness level of the player
+        STUDY_LEVEL  // Represents the study level of the player
+    }
+
+    /**
+     * The {@link MetricEffect} enum represents the possible effects on a player's metrics.
+     * It includes {@link MetricEffect#INCREASE}, {@link MetricEffect#DECREASE}, and {@link MetricEffect#RESET}.
+     */
+    public enum MetricEffect {
+        INCREASE,    // Represents an increase in a player's metric
+        DECREASE,    // Represents a decrease in a player's metric
+        RESET        // Represents resetting a player's metric to its initial value
+    }
+
     /**
      * The energy metric of the player.
      */
