@@ -170,6 +170,10 @@ button:hover {
     background-color: orangered;
 }
 
+details{
+    cursor: pointer;
+}
+
 summary{
     color: #333;
     font-size: 1.1em;
