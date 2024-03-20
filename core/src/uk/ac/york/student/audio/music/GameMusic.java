@@ -3,25 +3,30 @@ package uk.ac.york.student.audio.music;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import lombok.Getter;
+import org.jetbrains.annotations.Range;
 
 /**
- * Base class for game music
+ * This abstract class implements the Music interface and serves as a base class for game music.
+ * It provides common functionality for managing game music, such as play, pause, stop, and loop controls.
  */
 @Getter
 public abstract class GameMusic implements Music {
+    /**
+     * Music object that this GameMusic wraps around
+     */
     protected final Music music;
 
     /**
-     * Creates a new GameMusic with the given path
-     * @param path The path to the music file (in assets folder)
+     * Constructor for the GameMusic class.
+     * It initialises the object with the given path to the music file.
+     * @param path The internal path to the music file (in assets folder)
      */
     protected GameMusic(final String path)  {
         music = Gdx.audio.newMusic(Gdx.files.internal(path));
     }
 
-
     /**
-     * Plays the music
+     * Starts playing the music.
      */
     @Override
     public void play() {
@@ -29,7 +34,7 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Pauses the music
+     * Pauses the music.
      */
     @Override
     public void pause() {
@@ -37,7 +42,7 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Stops the music
+     * Stops the music.
      */
     @Override
     public void stop() {
@@ -45,7 +50,7 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Is the music currently playing
+     * Checks if the music is currently playing.
      * @return True if the music is playing, false otherwise
      */
     @Override
@@ -54,7 +59,7 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Set whether to loop the stream
+     * Sets whether the music should loop.
      * @param isLooping whether to loop the stream
      */
     @Override
@@ -63,7 +68,7 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Is the music currently looping
+     * Checks if the music is currently looping.
      * @return True if the music is looping, false otherwise
      */
     @Override
@@ -72,35 +77,35 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Set the volume
+     * Sets the volume of the music.
      * @param volume The volume in range [0.0, 1.0]
      */
     @Override
-    public void setVolume(final float volume) {
+    public void setVolume(@Range(from=0, to=1) final float volume) {
         music.setVolume(volume);
     }
 
     /**
-     * Get the volume
+     * Gets the volume of the music.
      * @return The volume in range [0.0, 1.0]
      */
     @Override
-    public float getVolume() {
+    public @Range(from=0, to=1) float getVolume() {
         return music.getVolume();
     }
 
     /**
-     * Set the panning and volume of the music
+     * Sets the panning and volume of the music.
      * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
      * @param volume the volume in the range [0,1].
      */
     @Override
-    public void setPan(final float pan, final float volume) {
+    public void setPan(@Range(from=-1, to=1) final float pan, @Range(from=0,to=1) final float volume) {
         music.setPan(pan, volume);
     }
 
     /**
-     * Set the playback position in seconds
+     * Sets the playback position in seconds.
      * @param position the position in seconds
      */
     @Override
@@ -109,7 +114,7 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Get the playback position in seconds
+     * Gets the playback position in seconds.
      * @return the position in seconds
      */
     @Override
@@ -118,7 +123,7 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Dispose of the music
+     * Disposes of the music.
      * Needs to be called when the Music is no longer needed.
      */
     @Override
@@ -127,7 +132,7 @@ public abstract class GameMusic implements Music {
     }
 
     /**
-     * Register a callback to be invoked when the end of a music stream has been reached during playback
+     * Registers a callback to be invoked when the end of a music stream has been reached during playback.
      * @param listener the callback that will be run.
      */
     @Override

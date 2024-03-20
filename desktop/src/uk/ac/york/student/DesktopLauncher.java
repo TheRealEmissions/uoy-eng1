@@ -11,12 +11,12 @@ import uk.ac.york.student.GdxGame;
 public class DesktopLauncher {
 	public static void main(String[] arg) {
 		final Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setForegroundFPS(60);
+		config.setForegroundFPS(60); // Vsynced to 60fps (no need to go above/below this)
 		config.setWindowedMode(1920, 1080);
 		config.setHdpiMode(HdpiMode.Logical); // Convert coordinates to be logical (scaled to 1920x1080)
 		config.setTitle("ENG1");
 		config.setIdleFPS(15); // Ensure game doesn't take up unnecessary resources when idle
-		config.setResizable(true);
+		config.setResizable(false); // Disabled until resizing is properly implemented
 		config.setInitialBackgroundColor(Color.WHITE);
 		new Lwjgl3Application(new GdxGame(), config);
 	}

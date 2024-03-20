@@ -5,21 +5,24 @@ import lombok.Getter;
 import uk.ac.york.student.audio.music.GameMusic;
 
 /**
- * The background music for the game
+ * This class extends GameMusic and implements the Music interface.
+ * It represents the background music for the game.
  */
 @Getter
 public class BackgroundMusic extends GameMusic implements Music {
 
     /**
-     * Creates a new background music with the default path
+     * Default constructor for the BackgroundMusic class.
+     * It initialises the object with the default path to the background music file.
      */
     public BackgroundMusic() {
         super("audio/music/background.mp3");
     }
 
     /**
-     * Creates a new background music with the given path
-     * @param path The path to the music file (in assets folder)
+     * Constructor for the BackgroundMusic class.
+     * It initialises the object with the given path to the music file.
+     * @param path The internal path to the music file (in assets folder)
      */
     public BackgroundMusic(final String path) {
         super(path);

@@ -7,28 +7,34 @@ import uk.ac.york.student.settings.GamePreferences;
 import uk.ac.york.student.settings.MusicPreferences;
 
 /**
- * Singleton class that manages the music for the game
+ * Singleton class that manages the music for the game.
+ * It implements the AudioManager interface and controls the background music.
  */
 public class MusicManager implements AudioManager {
     /**
-     * The background music for the game
+     * The background music for the game.
+     * It is a static final instance of BackgroundMusic.
      */
     public static final BackgroundMusic BACKGROUND_MUSIC = new BackgroundMusic();
 
     /**
-     * The instance of the music manager
+     * The instance of the music manager.
+     * It is a static final instance of MusicManager.
      */
     @Getter
     private static final MusicManager instance = new MusicManager();
 
     /**
-     * Private constructor to prevent instantiation
+     * Private constructor to prevent instantiation.
+     * As this is a singleton class, the constructor is private.
      */
     private MusicManager() {
 
     }
+
     /**
-     * Called when the game is started
+     * Called when the game is started.
+     * It checks the music preferences and if enabled, starts playing the background music.
      */
     @Override
     public void onEnable() {
@@ -40,6 +46,10 @@ public class MusicManager implements AudioManager {
         }
     }
 
+    /**
+     * Called when the game is stopped.
+     * It stops and disposes the background music.
+     */
     @Override
     public void onDisable() {
         BACKGROUND_MUSIC.stop();

@@ -36,6 +36,7 @@ public final class Screens {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static @Nullable Class<? extends BaseScreen> valueOf(String name) {
         Field[] fields = Screens.class.getFields();
         for (Field field : fields) {
