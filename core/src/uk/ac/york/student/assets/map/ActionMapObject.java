@@ -1,4 +1,4 @@
-package uk.ac.york.student.map;
+package uk.ac.york.student.assets.map;
 
 public interface ActionMapObject {
     String getStr();
