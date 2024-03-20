@@ -136,6 +136,21 @@ section {
     flex: 2;
 }
 
+button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+button:hover {
+    background-color: orangered;
+}
+
 #back-to-top-btn {
     display: none;
     position: fixed;
