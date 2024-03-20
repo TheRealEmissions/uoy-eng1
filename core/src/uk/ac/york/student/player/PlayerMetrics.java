@@ -18,10 +18,11 @@ public final class PlayerMetrics {
      * The {@link MetricType} enum represents the types of metrics related to a player.
      * It includes {@link MetricType#ENERGY}, {@link MetricType#HAPPINESS}, and {@link MetricType#STUDY_LEVEL}.
      */
+    @Getter
     public enum MetricType {
-        ENERGY,      // Represents the energy level of the player
-        HAPPINESS,   // Represents the happiness level of the player
-        STUDY_LEVEL  // Represents the study level of the player
+        ENERGY,       // Represents the energy level of the player
+        HAPPINESS,    // Represents the happiness level of the player
+        STUDY_LEVEL;  // Represents the study level of the player
     }
 
     /**
@@ -31,7 +32,7 @@ public final class PlayerMetrics {
     public enum MetricEffect {
         INCREASE,    // Represents an increase in a player's metric
         DECREASE,    // Represents a decrease in a player's metric
-        RESET        // Represents resetting a player's metric to its initial value
+        RESET;       // Represents resetting a player's metric to its initial value
     }
 
     /**
