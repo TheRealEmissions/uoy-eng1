@@ -1,4 +1,4 @@
-package uk.ac.york.student.map;
+package uk.ac.york.student.assets.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
