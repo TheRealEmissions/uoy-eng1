@@ -10,15 +10,15 @@ import uk.ac.york.student.utils.Pair;
 import java.util.List;
 
 /**
- * The {@link Activities} enum represents the different activities a player can perform.
+ * The {@link Activity} enum represents the different activities a player can perform.
  * Each activity has a list of effects on the player's metrics, represented as {@link Pair}s of {@link PlayerMetrics.MetricType} and {@link PlayerMetrics.MetricEffect}.
  * The effects of each activity are defined in the constructor.
- * The effects are stored in an {@link Unmodifiable} {@link List}, which can be retrieved using the getter method {@link Activities#getEffects()}.
+ * The effects are stored in an {@link Unmodifiable} {@link List}, which can be retrieved using the getter method {@link Activity#getEffects()}.
  */
 @Getter
-public enum Activities {
+public enum Activity {
     /**
-     * The {@link Activities#STUDY} activity increases the {@link Player}'s {@link PlayerMetrics#getStudyLevel()} and decreases their {@link PlayerMetrics#getEnergy()} and {@link PlayerMetrics#getHappiness()}.
+     * The {@link Activity#STUDY} activity increases the {@link Player}'s {@link PlayerMetrics#getStudyLevel()} and decreases their {@link PlayerMetrics#getEnergy()} and {@link PlayerMetrics#getHappiness()}.
      */
     STUDY(
         Pair.of(PlayerMetrics.MetricType.STUDY_LEVEL, PlayerMetrics.MetricEffect.INCREASE),
@@ -26,26 +26,26 @@ public enum Activities {
         Pair.of(PlayerMetrics.MetricType.HAPPINESS, PlayerMetrics.MetricEffect.DECREASE)
     ),
     /**
-     * The {@link Activities#SLEEP} activity resets the {@link Player}'s {@link PlayerMetrics#getEnergy()} and {@link PlayerMetrics#getStudyLevel()}.
+     * The {@link Activity#SLEEP} activity resets the {@link Player}'s {@link PlayerMetrics#getEnergy()} and {@link PlayerMetrics#getStudyLevel()}.
      */
     SLEEP(
         Pair.of(PlayerMetrics.MetricType.ENERGY, PlayerMetrics.MetricEffect.RESET),
         Pair.of(PlayerMetrics.MetricType.STUDY_LEVEL, PlayerMetrics.MetricEffect.RESET)
     ),
     /**
-     * The {@link Activities#NAP} activity increases the {@link Player}'s {@link PlayerMetrics#getEnergy()}.
+     * The {@link Activity#NAP} activity increases the {@link Player}'s {@link PlayerMetrics#getEnergy()}.
      */
     NAP(
         Pair.of(PlayerMetrics.MetricType.ENERGY, PlayerMetrics.MetricEffect.INCREASE)
     ),
     /**
-     * The {@link Activities#EAT} activity increases the {@link Player}'s {@link PlayerMetrics#getHappiness()}.
+     * The {@link Activity#EAT} activity increases the {@link Player}'s {@link PlayerMetrics#getHappiness()}.
      */
     EAT(
         Pair.of(PlayerMetrics.MetricType.HAPPINESS, PlayerMetrics.MetricEffect.INCREASE)
     ),
     /**
-     * The {@link Activities#ENTERTAIN} activity increases the {@link Player}'s {@link PlayerMetrics#getHappiness()} and decreases their {@link PlayerMetrics#getEnergy()}.
+     * The {@link Activity#ENTERTAIN} activity increases the {@link Player}'s {@link PlayerMetrics#getHappiness()} and decreases their {@link PlayerMetrics#getEnergy()}.
      */
     ENTERTAIN(
         Pair.of(PlayerMetrics.MetricType.HAPPINESS, PlayerMetrics.MetricEffect.INCREASE),
@@ -59,18 +59,18 @@ public enum Activities {
     private final @Unmodifiable List<Pair<PlayerMetrics.MetricType, PlayerMetrics.MetricEffect>> effects;
 
     /**
-     * Constructs a new {@link Activities} enum constant with the specified effects.
+     * Constructs a new {@link Activity} enum constant with the specified effects.
      *
      * @param effects the effects of the activity on the {@link Player}'s metrics
      */
     @SafeVarargs
-    Activities(Pair<PlayerMetrics.MetricType, PlayerMetrics.MetricEffect> ... effects) {
+    Activity(Pair<PlayerMetrics.MetricType, PlayerMetrics.MetricEffect> ... effects) {
         this.effects = List.of(effects);
     }
 
     /**
      * Returns the {@link PlayerMetrics.MetricEffect} of the activity on the specified {@link PlayerMetrics.MetricType}.
-     * This method iterates over {@link Activities#effects}.
+     * This method iterates over {@link Activity#effects}.
      * If a {@link PlayerMetrics.MetricEffect} with the specified {@link PlayerMetrics.MetricType} is found, the {@link PlayerMetrics.MetricEffect} is returned.
      * If no {@link PlayerMetrics.MetricEffect} with the specified {@link PlayerMetrics.MetricType} is found, null is returned.
      *
