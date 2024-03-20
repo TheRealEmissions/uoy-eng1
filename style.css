@@ -41,6 +41,10 @@ nav ul li a:hover {
     color: orangered;
 }
 
+a {
+    margin: 5px;
+}
+
 /* Main content styling */
 .main-content {
     padding: 20px;
@@ -132,3 +136,27 @@ section {
     flex: 2;
 }
 
+#back-to-top-btn {
+    display: none;
+    position: fixed;
+    bottom: 120px;
+    right: 20px;
+    z-index: 99;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#back-to-top-btn:hover {
+    background-color: orangered;
+}
+
+summary{
+    color: #333;
+    font-size: 1.1em;
+    margin-top: 20px;
+}
