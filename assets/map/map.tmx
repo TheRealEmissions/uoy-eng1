@@ -203,7 +203,7 @@
     <property name="spawnpoint" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="17" name="enterLibrary" x="64.7519" y="96.8722" width="32" height="16">
+  <object id="17" name="enterLibrary" x="64.7519" y="72.3722" width="32" height="40.5">
    <properties>
     <property name="activityStr" value="study at the library"/>
     <property name="activityTime" type="int" value="2"/>
@@ -211,14 +211,14 @@
     <property name="isActivity" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="19" name="enterRoom" x="341.987" y="200.325" width="20" height="32">
+  <object id="19" name="enterRoom" x="341.987" y="200.325" width="20" height="41">
    <properties>
     <property name="isNewMap" type="bool" value="true"/>
     <property name="newMap" value="inside_house"/>
     <property name="newMapStr" value="go into your house"/>
    </properties>
   </object>
-  <object id="21" name="enterPub" x="424.988" y="144.159" width="20" height="32">
+  <object id="21" name="enterPub" x="424.988" y="144.159" width="30.5" height="41.75">
    <properties>
     <property name="activityStr" value="go for drinks"/>
     <property name="activityTime" type="int" value="2"/>
