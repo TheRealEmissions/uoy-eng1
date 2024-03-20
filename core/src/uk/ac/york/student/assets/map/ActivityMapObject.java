@@ -1,4 +1,4 @@
-package uk.ac.york.student.map;
+package uk.ac.york.student.assets.map;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -12,7 +12,7 @@ public final class ActivityMapObject extends MapObject implements ActionMapObjec
     @Getter
     private final String type;
     @Getter
-    private final float time;
+    private final int time;
     public ActivityMapObject(@NotNull MapObject object) {
         super();
         setName(object.getName());
@@ -22,7 +22,7 @@ public final class ActivityMapObject extends MapObject implements ActionMapObjec
         properties = object.getProperties();
         str = properties.get("activityStr", String.class);
         type = properties.get("activityType", String.class);
-        time = properties.get("activityTime", Float.class);
+        time = properties.get("activityTime", Integer.class);
     }
 
     @Override
