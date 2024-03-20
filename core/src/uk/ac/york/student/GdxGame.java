@@ -146,6 +146,40 @@ public final class GdxGame extends Game {
 	}
 
 	/**
+	 * Sets the current screen to the specified screen class with an option to fade in, a specified fade-in time, and additional initialization arguments.
+	 * The current screen, retrieved from {@link GdxGame#getScreen()}, is disposed using {@link BaseScreen#dispose()} before the new screen is set.
+	 * The new screen is instantiated using reflection, with the constructor that takes a single argument of type {@link GdxGame}, a boolean indicating whether the screen should fade in, a float specifying the fade-in time, and an array of Objects as additional initialization arguments.
+	 * If an error occurs during the instantiation of the new screen, an error is logged and the application is exited.
+	 *
+	 * @param screen The class of the screen to set. This class must extend {@link BaseScreen} and have a constructor that takes a single argument of type {@link GdxGame}, a boolean, a float, and an array of {@link Object}s.
+	 * @param shouldFadeIn A boolean indicating whether the new screen should fade in.
+	 * @param fadeInTime A float specifying the time for the fade-in effect in seconds.
+	 * @param initArgs An array of {@link Object}s that are passed as additional initialization arguments to the new screen's constructor.
+	 */
+	public void setScreen(@NotNull Class<? extends BaseScreen> screen, boolean shouldFadeIn, float fadeInTime, Object ... initArgs) {
+		// Dispose the current screen if it exists
+		final Screen currentScreen = getScreen();
+		if (currentScreen != null) {
+			currentScreen.dispose();
+		}
+
+		// Create a new screen instance
+		BaseScreen newScreen;
+		try {
+			// Instantiate the new screen using reflection
+			newScreen = screen.getConstructor(GdxGame.class, boolean.class, float.class, Object[].class).newInstance(this, shouldFadeIn, fadeInTime, initArgs);
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			// Log the error and exit the application if the new screen cannot be instantiated
+			Gdx.app.error("LetRonCooke", "Error loading screen", e);
+			Gdx.app.exit();
+			return;
+		}
+
+		// Set the new screen
+		super.setScreen(newScreen);
+	}
+
+	/**
 	 * Transitions to a new screen with a fade-out effect.
 	 * The current screen, retrieved from {@link GdxGame#getScreen()}, is checked if it's an instance of {@link BaseScreen}.
 	 * If the current screen is null or not an instance of {@link BaseScreen}, the new screen is set immediately without transition.
@@ -176,6 +210,42 @@ public final class GdxGame extends Game {
 		sequenceAction.addAction(Actions.fadeOut(0.5f));
 		// Add a run action to the sequence that sets the new screen with a fade-in effect
 		sequenceAction.addAction(Actions.run(() -> setScreen(screen, true, 0.5f)));
+		// Add the sequence action to the root
+		baseScreen.getProcessor().getRoot().addAction(sequenceAction);
+	}
+
+	/**
+	 * Transitions to a new screen with a fade-out effect and additional initialization arguments.
+	 * The current screen, retrieved from {@link GdxGame#getScreen()}, is checked if it's an instance of {@link BaseScreen}.
+	 * If the current screen is null or not an instance of {@link BaseScreen}, the new screen is set immediately with a fade-in effect and the provided initialization arguments.
+	 * If the current screen is an instance of {@link BaseScreen}, a fade-out effect is applied to the current screen before transitioning to the new screen.
+	 * The new screen is set with a fade-in effect and the provided initialization arguments.
+	 *
+	 * @param screen The class of the screen to transition to. This class must extend {@link BaseScreen} and have a constructor that takes a single argument of type {@link GdxGame}, a boolean, a float, and an array of {@link Object}s.
+	 * @param initArgs An array of {@link Object}s that are passed as additional initialization arguments to the new screen's constructor.
+	 */
+	public void transitionScreen(@NotNull Class<? extends BaseScreen> screen, Object ... initArgs) {
+		// Dispose current screen
+		final Screen currentScreen = getScreen();
+		if (currentScreen == null) {
+			setScreen(screen, true, 0.5f, initArgs);
+			return;
+		}
+
+		if (!(currentScreen instanceof BaseScreen)) {
+			setScreen(screen, true, 0.5f, initArgs);
+			return;
+		}
+
+		final BaseScreen baseScreen = (BaseScreen) currentScreen;
+
+		// Set the alpha value of the root's color to 1
+		baseScreen.getProcessor().getRoot().getColor().a = 1;
+		SequenceAction sequenceAction = new SequenceAction();
+		// Add a fade-out action to the sequence
+		sequenceAction.addAction(Actions.fadeOut(0.5f));
+		// Add a run action to the sequence that sets the new screen with a fade-in effect and the provided initialization arguments
+		sequenceAction.addAction(Actions.run(() -> setScreen(screen, true, 0.5f, initArgs)));
 		// Add the sequence action to the root
 		baseScreen.getProcessor().getRoot().addAction(sequenceAction);
 	}
