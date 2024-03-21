@@ -23,11 +23,11 @@ public final class GameTime {
         progressBar = getProgressBar(scaledWidth, scaledHeight);
     }
 
-    public int getDayLength() {
+    public static int getDayLength() {
         return DAY_LENGTH;
     }
 
-    public int getDays() {
+    public static int getDays() {
         return DAYS;
     }
 
