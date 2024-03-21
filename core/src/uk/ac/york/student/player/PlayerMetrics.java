@@ -82,6 +82,19 @@ public final class PlayerMetrics {
         }
     }
 
+    public PlayerMetric getMetric(@NotNull MetricType type) {
+        switch (type) {
+            case ENERGY:
+                return energy;
+            case HAPPINESS:
+                return happiness;
+            case STUDY_LEVEL:
+                return studyLevel;
+            default:
+                throw new IllegalArgumentException("Invalid metric type: " + type);
+        }
+    }
+
     /**
      * Get the list of all player metrics.
      * @return An unmodifiable list of PlayerMetric objects.
