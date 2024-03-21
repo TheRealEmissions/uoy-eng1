@@ -23,6 +23,14 @@ public final class GameTime {
         progressBar = getProgressBar(scaledWidth, scaledHeight);
     }
 
+    public int getDayLength() {
+        return DAY_LENGTH;
+    }
+
+    public int getDays() {
+        return DAYS;
+    }
+
     @NotNull
     private ProgressBar getProgressBar(int scaledWidth, int scaledHeight) {
         ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle();
