@@ -224,7 +224,7 @@
     <property name="activityStr" value="go for drinks"/>
     <property name="activityTime" type="int" value="2"/>
     <property name="activityType" value="entertain"/>
-    <property name="changeAmount" value="0,0.3,0.4"/>
+    <property name="changeAmount" value="0.4,0.25"/>
     <property name="isActivity" type="bool" value="true"/>
    </properties>
   </object>
@@ -233,7 +233,7 @@
     <property name="activityStr" value="head to town"/>
     <property name="activityTime" type="int" value="3"/>
     <property name="activityType" value="entertain"/>
-    <property name="changeAmount" value="0,0.1,0.2"/>
+    <property name="changeAmount" value="0.2,0.1"/>
     <property name="isActivity" type="bool" value="true"/>
    </properties>
   </object>
@@ -242,7 +242,7 @@
     <property name="activityStr" value="feed the ducks"/>
     <property name="activityTime" type="int" value="1"/>
     <property name="activityType" value="entertain"/>
-    <property name="changeAmount" value="0,0.05,0.1"/>
+    <property name="changeAmount" value="0.1,0.05"/>
     <property name="isActivity" type="bool" value="true"/>
    </properties>
   </object>
@@ -251,7 +251,7 @@
     <property name="activityStr" value="climb clifford's tower"/>
     <property name="activityTime" type="int" value="1"/>
     <property name="activityType" value="entertain"/>
-    <property name="changeAmount" value="0,0.2,0.1"/>
+    <property name="changeAmount" value="0.1,0.2"/>
     <property name="isActivity" type="bool" value="true"/>
    </properties>
   </object>
