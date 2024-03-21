@@ -47,6 +47,16 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
     private Sprite sprite;
 
     /**
+     * Sprite objects for each direction to face in.
+     *<p>
+     *     There's no right facing region in the Atlas so the left one is flipped
+     *     when facing right.
+     *</p>
+     */
+    private final TextureAtlas.AtlasRegion SPRITETOWARDSREGION;
+    private final TextureAtlas.AtlasRegion SPRITEAWAYREGION;
+    private final TextureAtlas.AtlasRegion SPRITELEFTREGION;
+    /**
      * TiledMap object representing the current game map.
      */
     private TiledMap map;
@@ -76,7 +86,10 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
         mapScale = Math.max(Gdx.graphics.getWidth() / maxWidth, Gdx.graphics.getHeight() / maxHeight);
 
         // Create a sprite for the player and set its position, opacity, and size
-        sprite = textureAtlas.createSprite("char3_left");
+        SPRITETOWARDSREGION = textureAtlas.findRegion("char3_towards");
+        SPRITEAWAYREGION = textureAtlas.findRegion("char3_away");
+        SPRITELEFTREGION = textureAtlas.findRegion("char3_left");
+        sprite = textureAtlas.createSprite("char3_towards");
         sprite.setPosition(startPosition.x, startPosition.y);
         sprite.setAlpha(1);
         sprite.setSize(sprite.getWidth() * mapScale, sprite.getHeight() * mapScale);
@@ -107,7 +120,7 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
         mapScale = Math.max(Gdx.graphics.getWidth() / maxWidth, Gdx.graphics.getHeight() / maxHeight);
 
         // Create a sprite for the player and set its position, opacity, and size
-        sprite = textureAtlas.createSprite("char3_left");
+        sprite = textureAtlas.createSprite("char3_towards");
         sprite.setAlpha(1);
 
         // Scale the sprite according to the map scale
@@ -185,24 +198,29 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
 
         // Move the sprite up if the UP movement is active and the sprite is not at the top of the map
         if (Movement.UP.is && (sprite.getY() + sprite.getHeight() < maxHeightScaled)) {
+            sprite.setRegion(SPRITEAWAYREGION);
             sprite.translateY(amount);
             setY(sprite.getY());
         }
 
         // Move the sprite down if the DOWN movement is active and the sprite is not at the bottom of the map
         if (Movement.DOWN.is && (sprite.getY() > 0)) {
+            sprite.setRegion(SPRITETOWARDSREGION);
             sprite.translateY(-amount);
             setY(sprite.getY());
         }
 
         // Move the sprite left if the LEFT movement is active and the sprite is not at the left edge of the map
         if (Movement.LEFT.is && (sprite.getX() > 0)) {
+            sprite.setRegion(SPRITELEFTREGION);
             sprite.translateX(-amount);
             setX(sprite.getX());
         }
 
         // Move the sprite right if the RIGHT movement is active and the sprite is not at the right edge of the map
         if (Movement.RIGHT.is && (sprite.getX() + sprite.getWidth() < maxWidthScaled)) {
+            sprite.setRegion(SPRITELEFTREGION);
+            sprite.setFlip(true, false);
             sprite.translateX(amount);
             setX(sprite.getX());
         }
