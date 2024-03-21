@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import uk.ac.york.student.GdxGame;
 import uk.ac.york.student.player.Player;
 
+@Getter
 public class EndScreen extends BaseScreen {
-    @Getter
     private final Stage processor;
     private final Player player;
     public EndScreen(GdxGame game) {
