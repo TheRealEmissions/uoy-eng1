@@ -30,7 +30,7 @@ public final class ActivityMapObject extends MapObject implements ActionMapObjec
     private final String str;
 
     /**
-     * String representing the type of the activity
+     * The type of the activity
      */
     @Getter
     private final Activity type;
