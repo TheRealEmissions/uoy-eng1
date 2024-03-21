@@ -151,7 +151,7 @@
     <property name="activityStr" value="study at your desk"/>
     <property name="activityTime" type="int" value="3"/>
     <property name="activityType" value="study"/>
-    <property name="changeAmount" value="0,0.3,0.2"/>
+    <property name="changeAmount" value=".2,0.3,0.2"/>
     <property name="isActivity" type="bool" value="true"/>
    </properties>
   </object>
