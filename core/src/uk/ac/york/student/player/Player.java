@@ -413,15 +413,19 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
+            case Input.Keys.UP:
             case Input.Keys.W:
                 Movement.UP.set(true);
                 break;
+            case Input.Keys.DOWN:
             case Input.Keys.S:
                 Movement.DOWN.set(true);
                 break;
+            case Input.Keys.LEFT:
             case Input.Keys.A:
                 Movement.LEFT.set(true);
                 break;
+            case Input.Keys.RIGHT:
             case Input.Keys.D:
                 Movement.RIGHT.set(true);
                 break;
@@ -448,15 +452,19 @@ public class Player extends Actor implements PlayerScore, InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode) {
+            case Input.Keys.UP:
             case Input.Keys.W:
                 Movement.UP.set(false);
                 break;
+            case Input.Keys.DOWN:
             case Input.Keys.S:
                 Movement.DOWN.set(false);
                 break;
+            case Input.Keys.LEFT:
             case Input.Keys.A:
                 Movement.LEFT.set(false);
                 break;
+            case Input.Keys.RIGHT:
             case Input.Keys.D:
                 Movement.RIGHT.set(false);
                 break;
