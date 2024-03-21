@@ -305,7 +305,7 @@ public class GameScreen extends BaseScreen implements InputProcessor {
             }
             if (gameTime.isEndOfDay() && !activity.equals(Activity.SLEEP)) {
                 actionText = new StringBuilder("Night owl, it's time to sleep!");
-            } else if (gameTime.getCurrentHour() + requiredTime > gameTime.getDayLength() && !activity.equals(Activity.SLEEP)) {
+            } else if (gameTime.getCurrentHour() + requiredTime > GameTime.getDayLength() && !activity.equals(Activity.SLEEP)) {
                 actionText = new StringBuilder("You don't have enough time to do this activity.");
             } else if (!negativeEffects.isEmpty() && !hasEnough && !activity.equals(Activity.SLEEP)) {
                 actionText = new StringBuilder("You don't have enough ");
@@ -325,7 +325,7 @@ public class GameScreen extends BaseScreen implements InputProcessor {
             } else {
                 if (!activity.equals(Activity.SLEEP)) actionText.append(" (").append(requiredTime).append(" hours)");
                 else {
-                    if (gameTime.getCurrentDay() + 1 == gameTime.getDays()) {
+                    if (gameTime.getCurrentDay() + 1 == GameTime.getDays()) {
                         actionText.append(" (End of the game!)");
                     } else {
                         actionText.append(" (End of the day)");
@@ -440,15 +440,16 @@ public class GameScreen extends BaseScreen implements InputProcessor {
         Activity type = actionMapObject.getType();
         if (gameTime.isEndOfDay() && !type.equals(Activity.SLEEP)) return false;
         int requiredTime = actionMapObject.getTime();
-        if (gameTime.getCurrentHour() + requiredTime > gameTime.getDayLength() && !type.equals(Activity.SLEEP)) return false;
+        if (gameTime.getCurrentHour() + requiredTime > GameTime.getDayLength() && !type.equals(Activity.SLEEP)) return false;
         List<Pair<PlayerMetrics.MetricType, PlayerMetrics.MetricEffect>> effects = type.getEffects();
         List<Pair<PlayerMetrics.MetricType, PlayerMetrics.MetricEffect>> negativeEffects = effects.stream().filter(x -> x.getRight().equals(PlayerMetrics.MetricEffect.DECREASE)).collect(Collectors.toList());
+        PlayerMetrics metrics = player.getMetrics();
         if (!negativeEffects.isEmpty()) {
             boolean hasEnough = true;
             for (Pair<PlayerMetrics.MetricType, PlayerMetrics.MetricEffect> negativeEffect : negativeEffects) {
                 PlayerMetrics.MetricType metricType = negativeEffect.getLeft();
                 float changeAmount = actionMapObject.getChangeAmount(metricType);
-                PlayerMetric metric = player.getMetrics().getMetric(metricType);
+                PlayerMetric metric = metrics.getMetric(metricType);
                 float currentMetric = metric.get();
                 hasEnough = currentMetric >= changeAmount;
                 if (!hasEnough) break;
@@ -459,10 +460,14 @@ public class GameScreen extends BaseScreen implements InputProcessor {
             PlayerMetrics.MetricType metricType = effect.getLeft();
             PlayerMetrics.MetricEffect metricEffect = effect.getRight();
             float changeAmount = actionMapObject.getChangeAmount(metricType);
-            player.getMetrics().changeMetric(metricType, metricEffect, changeAmount);
+            metrics.changeMetric(metricType, metricEffect, changeAmount);
         }
         if (type.equals(Activity.SLEEP)) {
-            if (gameTime.getCurrentDay() + 1 == gameTime.getDays()) {
+            List<PlayerMetric> allMetrics = metrics.getMetrics();
+            for (PlayerMetric m : allMetrics) {
+                m.increaseTotal(m.get());
+            }
+            if (gameTime.getCurrentDay() + 1 == GameTime.getDays()) {
                 game.transitionScreen(Screens.END, player);
                 return true;
             } else {
