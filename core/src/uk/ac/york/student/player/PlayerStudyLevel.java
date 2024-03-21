@@ -36,11 +36,23 @@ public class PlayerStudyLevel implements PlayerMetric {
     private @Range(from=0, to=1) float studyLevel = 0.1f;
 
     /**
+     * This method is used to get the default study level for a player.
+     * The default study level is set to 0.1, indicating that a player starts the game with a study level of 0.1.
+     *
+     * @return float This returns the default study level of 0.1.
+     */
+    @Override
+    public float getDefault() {
+        return 0.1f;
+    }
+
+    /**
      * Get the study level of the player.
      * This is a float value between 0 and 1, where 0 represents not studied and 1 represents very studied.
      * @return the study level of the player
      */
-    @Range(from=0, to=1) float getStudyLevel() {
+    @Override
+    public @Range(from=0, to=1) float get() {
         return studyLevel;
     }
 
@@ -51,8 +63,10 @@ public class PlayerStudyLevel implements PlayerMetric {
      * This ensures that the study level is always within the valid range.
      * @param studyLevel the new study level of the player
      */
-    void setStudyLevel(@Range(from=0, to=1) float studyLevel) {
+    @Override
+    public void set(@Range(from=0, to=1) float studyLevel) {
         this.studyLevel = Math.max(PROGRESS_BAR_MINIMUM, Math.min(1, studyLevel));
+        this.progressBar.setValue(this.studyLevel);
     }
 
     /**
@@ -62,8 +76,9 @@ public class PlayerStudyLevel implements PlayerMetric {
      * This ensures that the study level does not exceed 1 (very studied).
      * @param amount the amount of study to be added to the player's current study level
      */
-    void increaseStudyLevel(float amount) {
-        studyLevel = Math.min(1, studyLevel + amount);
+    @Override
+    public void increase(float amount) {
+        set(Math.min(1, studyLevel + amount));
     }
 
     /**
@@ -73,8 +88,9 @@ public class PlayerStudyLevel implements PlayerMetric {
      * This ensures that the study level does not go below the minimum study level.
      * @param amount the amount of study to be subtracted from the player's current study level
      */
-    void decreaseStudyLevel(float amount) {
-        studyLevel = Math.max(PROGRESS_BAR_MINIMUM, studyLevel - amount);
+    @Override
+    public void decrease(float amount) {
+        set(Math.max(PROGRESS_BAR_MINIMUM, studyLevel - amount));
     }
 
     /**
@@ -85,7 +101,7 @@ public class PlayerStudyLevel implements PlayerMetric {
      */
     @Override
     public ProgressBar getProgressBar() {
-        progressBar.setValue(getStudyLevel());
+        progressBar.setValue(get());
         return progressBar;
     }
 

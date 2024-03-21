@@ -32,14 +32,25 @@ public class PlayerHappiness implements PlayerMetric {
      * This is a float value ranging from 0 to 1, where 0 represents not happy and 1 represents very happy.
      * It is initially set to 1, indicating that the player starts the game being very happy.
      */
-    private @Range(from=0, to=1) float happiness = 1f;
+    private @Range(from=0, to=1) float happiness = getDefault();
+    /**
+     * This method is used to get the default happiness level for a player.
+     * The default happiness level is set to 1.0, indicating that a player starts the game at full happiness.
+     *
+     * @return float This returns the default happiness level of 1.0.
+     */
+    @Override
+    public float getDefault() {
+        return 1f;
+    }
     /**
      * Getter method for the happiness level of the player.
      * This method returns the current happiness level of the player.
      * The happiness level is a float value ranging from 0 to 1, where 0 represents not happy and 1 represents very happy.
      * @return the current happiness level of the player.
      */
-    @Range(from=0, to=1) float getHappiness() {
+    @Override
+    public @Range(from=0, to=1) float get() {
         return happiness;
     }
 
@@ -51,8 +62,10 @@ public class PlayerHappiness implements PlayerMetric {
      * This ensures that the happiness level is always within the valid range.
      * @param happiness the new happiness level of the player
      */
-    void setHappiness(@Range(from=0, to=1) float happiness) {
+    @Override
+    public void set(@Range(from=0, to=1) float happiness) {
         this.happiness = Math.max(PROGRESS_BAR_MINIMUM, Math.min(1, happiness));
+        this.progressBar.setValue(this.happiness);
     }
 
 
@@ -63,8 +76,9 @@ public class PlayerHappiness implements PlayerMetric {
      * This ensures that the happiness level does not exceed 1.
      * @param amount the amount to increase the happiness level by
      */
-    void increaseHappiness(float amount) {
-        happiness = Math.min(1, happiness + amount);
+    @Override
+    public void increase(float amount) {
+        set(Math.min(1, happiness + amount));
     }
 
 
@@ -75,8 +89,9 @@ public class PlayerHappiness implements PlayerMetric {
      * This ensures that the happiness level does not go below the minimum happiness level.
      * @param amount the amount to decrease the happiness level by
      */
-    void decreaseHappiness(float amount) {
-        happiness = Math.max(PROGRESS_BAR_MINIMUM, happiness - amount);
+    @Override
+    public void decrease(float amount) {
+        set(Math.max(PROGRESS_BAR_MINIMUM, happiness - amount));
     }
 
     /**
@@ -87,7 +102,7 @@ public class PlayerHappiness implements PlayerMetric {
      */
     @Override
     public ProgressBar getProgressBar() {
-        progressBar.setValue(getHappiness());
+        progressBar.setValue(get());
         return progressBar;
     }
 

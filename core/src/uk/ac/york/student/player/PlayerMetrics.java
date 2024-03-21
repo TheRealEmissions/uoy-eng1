@@ -2,6 +2,7 @@ package uk.ac.york.student.player;
 
 import lombok.Getter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
@@ -49,6 +50,37 @@ public final class PlayerMetrics {
      * The study level metric of the player.
      */
     private final PlayerStudyLevel studyLevel = new PlayerStudyLevel();
+
+    public void changeMetric(@NotNull MetricType type, MetricEffect effect, float changeAmount) {
+        PlayerMetric metric;
+        switch (type) {
+            case ENERGY:
+                metric = energy;
+                break;
+            case HAPPINESS:
+                metric = happiness;
+                break;
+            case STUDY_LEVEL:
+                metric = studyLevel;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid metric type: " + type);
+        }
+
+        switch (effect) {
+            case INCREASE:
+                metric.increase(changeAmount);
+                break;
+            case DECREASE:
+                metric.decrease(changeAmount);
+                break;
+            case RESET:
+                metric.set(metric.getDefault());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid metric effect: " + effect);
+        }
+    }
 
     /**
      * Get the list of all player metrics.

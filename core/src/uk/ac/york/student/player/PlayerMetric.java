@@ -32,6 +32,12 @@ public interface PlayerMetric {
      */
     String getLabel();
 
+    float get();
+    void set(float value);
+    void increase(float amount);
+    void decrease(float amount);
+    float getDefault();
+
     /**
      * Dispose resources when they are no longer needed.
      * By default, it disposes the skin.

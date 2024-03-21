@@ -33,13 +33,24 @@ public class PlayerEnergy implements PlayerMetric {
      * This is a float value between 0 and 1, where 0 represents no energy and 1 represents full energy.
      * By default, the energy level is set to 1 (full energy).
      */
-    private @Range(from=0, to=1) float energy = 1f;
+    private @Range(from=0, to=1) float energy = getDefault();
+    /**
+     * Returns the default energy level for the player.
+     * This is a float value of 1, representing full energy.
+     *
+     * @return the default energy level of the player
+     */
+    @Override
+    public float getDefault() {
+        return 1f;
+    }
     /**
      * Get the energy level of the player.
      * This is a float value between 0 and 1, where 0 represents no energy and 1 represents full energy.
      * @return the energy level of the player
      */
-    @Range(from=0, to=1) float getEnergy() {
+    @Override
+    public @Range(from=0, to=1) float get() {
         return energy;
     }
 
@@ -50,8 +61,10 @@ public class PlayerEnergy implements PlayerMetric {
      * This ensures that the energy level is always within the valid range.
      * @param energy the new energy level of the player
      */
-    void setEnergy(@Range(from=0, to=1) float energy) {
+    @Override
+    public void set(@Range(from=0, to=1) float energy) {
         this.energy = Math.max(PROGRESS_BAR_MINIMUM, Math.min(1, energy));
+        this.progressBar.setValue(this.energy);
     }
 
     /**
@@ -61,8 +74,9 @@ public class PlayerEnergy implements PlayerMetric {
      * This ensures that the energy level does not exceed 1 (full energy).
      * @param amount the amount of energy to be added to the player's current energy level
      */
-    void increaseEnergy(float amount) {
-        energy = Math.min(1, energy + amount);
+    @Override
+    public void increase(float amount) {
+        set(Math.min(1, energy + amount));
     }
 
     /**
@@ -72,8 +86,9 @@ public class PlayerEnergy implements PlayerMetric {
      * This ensures that the energy level does not go below the minimum energy level.
      * @param amount the amount of energy to be subtracted from the player's current energy level
      */
-    void decreaseEnergy(float amount) {
-        energy = Math.max(PROGRESS_BAR_MINIMUM, energy - amount);
+    @Override
+    public void decrease(float amount) {
+        set(Math.max(PROGRESS_BAR_MINIMUM, energy - amount));
     }
 
     /**
@@ -84,7 +99,7 @@ public class PlayerEnergy implements PlayerMetric {
      */
     @Override
     public ProgressBar getProgressBar() {
-        progressBar.setValue(getEnergy());
+        progressBar.setValue(get());
         return progressBar;
     }
 
