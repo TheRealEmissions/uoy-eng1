@@ -160,7 +160,7 @@
     <property name="activityStr" value="watch the fish"/>
     <property name="activityTime" type="int" value="1"/>
     <property name="activityType" value="entertain"/>
-    <property name="changeAmount" value="0.1,0.05"/>
+    <property name="changeAmount" value="0.1,0.1"/>
     <property name="isActivity" type="bool" value="true"/>
    </properties>
   </object>
@@ -195,12 +195,12 @@
     <property name="newMapStr" value="go outside"/>
    </properties>
   </object>
-  <object id="11" name="daydream" x="164.448" y="184.482">
+  <object id="11" name="daydream" x="164.448" y="184.482" width="16" height="16">
    <properties>
     <property name="activityStr" value="daydream"/>
     <property name="activityTime" type="int" value="1"/>
-    <property name="activityType" value="entertain"/>
-    <property name="changeAmount" value="0.05,0.05"/>
+    <property name="activityType" value="nap"/>
+    <property name="changeAmount" value="0.15"/>
     <property name="isActivity" type="bool" value="true"/>
    </properties>
   </object>
