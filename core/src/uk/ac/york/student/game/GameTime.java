@@ -8,7 +8,8 @@ import uk.ac.york.student.utils.DrawableUtils;
 
 @Getter
 public final class GameTime {
-    private static final int DAY_LENGTH = 12;
+    private static final int DAYS = 7;
+    private static final int DAY_LENGTH = 16;
     private static final int WIDTH = 50;
     private static final int HEIGHT = 5;
 
@@ -48,21 +49,38 @@ public final class GameTime {
         getProgressBar(scale);
     }
 
-    private int currentHour = 0;
-
-    public void incrementHour() {
-        incrementHour(1);
-    }
+    private int currentHour = 3;
 
     public void incrementHour(int amount) {
-        currentHour = Math.min(DAY_LENGTH - 1, currentHour + amount);
+        currentHour = Math.min(DAY_LENGTH, currentHour + amount);
     }
 
-    public void reset() {
+    public void resetHour() {
         currentHour = 0;
     }
 
     public boolean isEndOfDay() {
-        return currentHour == DAY_LENGTH - 1;
+        return currentHour == DAY_LENGTH;
+    }
+
+    private int currentDay = 0;
+
+    public void incrementDay() {
+        incrementDay(1);
+        resetHour();
+    }
+
+    public void incrementDay(int amount) {
+        currentDay = Math.min(DAYS - 1, currentDay + amount);
+        resetHour();
+    }
+
+    public void resetDay() {
+        currentDay = 0;
+        resetHour();
+    }
+
+    public boolean isEndOfDays() {
+        return currentDay == DAYS - 1;
     }
 }

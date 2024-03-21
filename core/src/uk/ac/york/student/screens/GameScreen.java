@@ -180,10 +180,13 @@ public class GameScreen extends BaseScreen implements InputProcessor {
         metricsTable.padRight(20);
 
         ProgressBar timeBar = gameTime.getProgressBar();
+        String currentHour = getCurrentHourString();
+        String currentDay = "Day " + (gameTime.getCurrentDay() + 1);
+        String time = currentDay + " " + currentHour;
         timeTable.setFillParent(true);
         processor.addActor(timeTable);
         timeTable.setWidth(500);
-        timeTable.add(new Label("Time", craftacularSkin));
+        timeTable.add(new Label(time, craftacularSkin));
         timeTable.row();
         timeTable.add(timeBar).width(500);
         timeTable.top();
@@ -192,6 +195,28 @@ public class GameScreen extends BaseScreen implements InputProcessor {
 
         processor.getViewport().update((int) width, (int) height);
 
+    }
+
+    @NotNull
+    private String getCurrentHourString() {
+        int currentHourNum = gameTime.getCurrentHour();
+        final int startHour = 8;
+        final int midday = 12 - startHour;
+        boolean isAm = currentHourNum < (12 - startHour);
+        String currentHour;
+        if (!gameTime.isEndOfDay()) {
+            currentHour = String.valueOf(isAm || currentHourNum == midday ? currentHourNum + startHour : currentHourNum - (12 - startHour)); // 9am start
+            if (currentHour.length() == 1) currentHour = "0" + currentHour;
+            currentHour += ":00";
+            if (isAm) {
+                currentHour += " AM";
+            } else {
+                currentHour += " PM";
+            }
+        } else {
+            currentHour = "00:00 - Time to sleep!";
+        }
+        return currentHour;
     }
 
     private final AtomicReference<@Nullable ActionMapObject> currentActionMapObject = new AtomicReference<>(null);
