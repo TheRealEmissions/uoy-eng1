@@ -6,6 +6,10 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.york.student.GdxGame;
 import uk.ac.york.student.player.Player;
+import uk.ac.york.student.player.PlayerMetric;
+import uk.ac.york.student.player.PlayerMetrics;
+
+import java.util.List;
 
 @Getter
 public class EndScreen extends BaseScreen {
@@ -20,6 +24,20 @@ public class EndScreen extends BaseScreen {
         super(game);
         processor = new Stage(new ScreenViewport());
         player = (Player) args[0];
+
+        PlayerMetrics metrics = player.getMetrics();
+        float energyTotal = metrics.getEnergy().getTotal();
+        float studyLevelTotal = metrics.getStudyLevel().getTotal();
+        float happinessTotal = metrics.getHappiness().getTotal();
+        float energyMax = metrics.getEnergy().getMaxTotal();
+        float studyLevelMax = metrics.getStudyLevel().getMaxTotal();
+        float happinessMax = metrics.getHappiness().getMaxTotal();
+
+        float score = player.calculateScore(energyTotal, energyMax, studyLevelTotal, studyLevelMax, happinessTotal, happinessMax);
+        System.out.println(score);
+        String scoreString = player.convertScoreToString(score);
+        System.out.println(scoreString);
+
     }
 
     @Override
