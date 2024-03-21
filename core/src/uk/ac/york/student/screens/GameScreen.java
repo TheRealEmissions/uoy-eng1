@@ -33,9 +33,11 @@ import uk.ac.york.student.assets.map.ActivityMapObject;
 import uk.ac.york.student.assets.map.MapManager;
 import uk.ac.york.student.assets.map.TransitionMapObject;
 import uk.ac.york.student.game.GameTime;
+import uk.ac.york.student.game.activities.Activity;
 import uk.ac.york.student.player.Player;
 import uk.ac.york.student.player.PlayerMetric;
 import uk.ac.york.student.player.PlayerMetrics;
+import uk.ac.york.student.utils.Pair;
 import uk.ac.york.student.utils.StreamUtils;
 
 import java.util.List;
@@ -56,6 +58,7 @@ public class GameScreen extends BaseScreen implements InputProcessor {
     private final Table metricsTable = new Table();
     private final Table timeTable = new Table();
     private final Label actionLabel = new Label("ENG1 Project. Super cool. (You will never see this)", craftacularSkin);
+    private final Label timeLabel = new Label("You exist outside of the space-time continuum.", craftacularSkin);
     public GameScreen(GdxGame game) {
         super(game);
 
@@ -186,7 +189,8 @@ public class GameScreen extends BaseScreen implements InputProcessor {
         timeTable.setFillParent(true);
         processor.addActor(timeTable);
         timeTable.setWidth(500);
-        timeTable.add(new Label(time, craftacularSkin));
+        timeLabel.setText(time);
+        timeTable.add(timeLabel);
         timeTable.row();
         timeTable.add(timeBar).width(500);
         timeTable.top();
@@ -360,16 +364,37 @@ public class GameScreen extends BaseScreen implements InputProcessor {
             ActionMapObject actionMapObject = currentActionMapObject.get();
             if (actionMapObject != null) {
                 if (actionMapObject instanceof ActivityMapObject) {
-                    ActivityMapObject activityMapObject = (ActivityMapObject) actionMapObject;
+                    return doActivity((ActivityMapObject) actionMapObject);
                 } else if (actionMapObject instanceof TransitionMapObject) {
-                    TransitionMapObject transitionMapObject = (TransitionMapObject) actionMapObject;
-                    changeMap(transitionMapObject.getType());
+                    return doMapChange((TransitionMapObject) actionMapObject);
                 } else {
                     throw new IllegalStateException("Unexpected value: " + actionMapObject);
                 }
             }
         }
         return playerKeyDown;
+    }
+
+    private boolean doMapChange(@NotNull TransitionMapObject actionMapObject) {
+        changeMap(actionMapObject.getType());
+        return true;
+    }
+
+    private boolean doActivity(@NotNull ActivityMapObject actionMapObject) {
+        Activity type = actionMapObject.getType();
+        List<Pair<PlayerMetrics.MetricType, PlayerMetrics.MetricEffect>> effects = type.getEffects();
+        for (Pair<PlayerMetrics.MetricType, PlayerMetrics.MetricEffect> effect : effects) {
+            PlayerMetrics.MetricType metricType = effect.getLeft();
+            PlayerMetrics.MetricEffect metricEffect = effect.getRight();
+            float changeAmount = actionMapObject.getChangeAmount(metricType);
+            player.getMetrics().changeMetric(metricType, metricEffect, changeAmount);
+        }
+        gameTime.incrementHour(actionMapObject.getTime());
+        String currentHour = getCurrentHourString();
+        String currentDay = "Day " + (gameTime.getCurrentDay() + 1);
+        String time = currentDay + " " + currentHour;
+        timeLabel.setText(time);
+        return true;
     }
 
     @Override
