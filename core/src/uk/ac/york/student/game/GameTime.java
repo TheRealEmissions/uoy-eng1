@@ -26,7 +26,7 @@ public final class GameTime {
     @NotNull
     private ProgressBar getProgressBar(int scaledWidth, int scaledHeight) {
         ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle();
-        final ProgressBar progressBar = new ProgressBar(0, 12, 1, false, style);
+        final ProgressBar progressBar = new ProgressBar(0, DAY_LENGTH, 1, false, style);
         ProgressBar.ProgressBarStyle barStyle = progressBar.getStyle();
         barStyle.background = DrawableUtils.getColouredDrawable(scaledWidth, scaledHeight, Color.GRAY);
         barStyle.knobBefore = DrawableUtils.getColouredDrawable(scaledWidth, scaledHeight, Color.GREEN);
@@ -37,7 +37,7 @@ public final class GameTime {
         progressBar.setHeight(scaledHeight);
 
         progressBar.setAnimateDuration(0.25f);
-        progressBar.setValue(0);
+        progressBar.setValue(currentHour);
         return progressBar;
     }
 
@@ -49,14 +49,18 @@ public final class GameTime {
         getProgressBar(scale);
     }
 
-    private int currentHour = 3;
+    private int currentHour = 0;
+    private void setCurrentHour(int hour) {
+        currentHour = hour;
+        progressBar.setValue(currentHour);
+    }
 
     public void incrementHour(int amount) {
-        currentHour = Math.min(DAY_LENGTH, currentHour + amount);
+        setCurrentHour(Math.min(DAY_LENGTH, currentHour + amount));
     }
 
     public void resetHour() {
-        currentHour = 0;
+        setCurrentHour(0);
     }
 
     public boolean isEndOfDay() {
