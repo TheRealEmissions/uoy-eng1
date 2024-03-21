@@ -3,14 +3,23 @@ package uk.ac.york.student.screens;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import uk.ac.york.student.GdxGame;
+import uk.ac.york.student.player.Player;
 
 public class EndScreen extends BaseScreen {
     @Getter
     private final Stage processor;
+    private final Player player;
     public EndScreen(GdxGame game) {
         super(game);
+        throw new UnsupportedOperationException("This constructor is not supported (must pass in object args!)");
+    }
+
+    public EndScreen(GdxGame game, boolean shouldFadeIn, float fadeInTime, Object @NotNull [] args) {
+        super(game);
         processor = new Stage(new ScreenViewport());
+        player = (Player) args[0];
     }
 
     @Override
