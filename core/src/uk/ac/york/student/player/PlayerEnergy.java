@@ -2,6 +2,7 @@ package uk.ac.york.student.player;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import org.jetbrains.annotations.Range;
+import uk.ac.york.student.game.GameTime;
 
 /**
  * The PlayerEnergy class represents the energy level of a player in the game.
@@ -34,6 +35,28 @@ public class PlayerEnergy implements PlayerMetric {
      * By default, the energy level is set to 1 (full energy).
      */
     private @Range(from=0, to=1) float energy = getDefault();
+    /**
+     * The total amount of energy accumulated by the player across all days of the game.
+     * This is a float value that starts at 0 and increases as the player gains more energy.
+     * This value is incremented when the player sleeps based on what their energy level is at that given time.
+     */
+    private float totalEnergy = 0f;
+
+    public float getMaxTotal() {
+        return GameTime.getDays();
+    }
+
+    public float getTotal() {
+        return totalEnergy;
+    }
+
+    public void setTotal(float total) {
+        this.totalEnergy = total;
+    }
+
+    public void increaseTotal(float amount) {
+        this.totalEnergy += amount;
+    }
     /**
      * Returns the default energy level for the player.
      * This is a float value of 1, representing full energy.

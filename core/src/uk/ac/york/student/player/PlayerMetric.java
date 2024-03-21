@@ -38,6 +38,11 @@ public interface PlayerMetric {
     void decrease(float amount);
     float getDefault();
 
+    void setTotal(float total);
+    void increaseTotal(float amount);
+    float getTotal();
+    float getMaxTotal();
+
     /**
      * Dispose resources when they are no longer needed.
      * By default, it disposes the skin.

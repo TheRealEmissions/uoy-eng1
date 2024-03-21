@@ -2,6 +2,7 @@ package uk.ac.york.student.player;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import org.jetbrains.annotations.Range;
+import uk.ac.york.student.game.GameTime;
 
 /**
  * The PlayerStudyLevel class represents the study level of a player in the game.
@@ -34,6 +35,29 @@ public class PlayerStudyLevel implements PlayerMetric {
      * By default, the study level is set to 0.1.
      */
     private @Range(from=0, to=1) float studyLevel = 0.1f;
+
+    /**
+     * The total amount of study accumulated by the player across all days of the game.
+     * This is a float value that starts at 0 and increases as the player studies more.
+     * This value is incremented when the player sleeps based on what their study level is at that given time.
+     */
+    private float totalStudy = 0f;
+
+    public float getMaxTotal() {
+        return GameTime.getDays();
+    }
+
+    public float getTotal() {
+        return totalStudy;
+    }
+
+    public void setTotal(float total) {
+        this.totalStudy = total;
+    }
+
+    public void increaseTotal(float amount) {
+        this.totalStudy += amount;
+    }
 
     /**
      * This method is used to get the default study level for a player.

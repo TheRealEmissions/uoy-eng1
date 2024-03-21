@@ -2,6 +2,7 @@ package uk.ac.york.student.player;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import org.jetbrains.annotations.Range;
+import uk.ac.york.student.game.GameTime;
 
 /**
  * The PlayerHappiness class implements the PlayerMetric interface.
@@ -33,6 +34,29 @@ public class PlayerHappiness implements PlayerMetric {
      * It is initially set to 1, indicating that the player starts the game being very happy.
      */
     private @Range(from=0, to=1) float happiness = getDefault();
+    /**
+     * The total amount of happiness accumulated by the player across all days of the game.
+     * This is a float value that starts at 0 and increases as the player becomes happier.
+     * This value is incremented when the player sleeps based on what their happiness level is at that given time.
+     */
+    private float totalHappiness = 0f;
+
+    public float getMaxTotal() {
+        return GameTime.getDays();
+    }
+
+    public float getTotal() {
+        return totalHappiness;
+    }
+
+    public void setTotal(float total) {
+        this.totalHappiness = total;
+    }
+
+    public void increaseTotal(float amount) {
+        this.totalHappiness += amount;
+    }
+
     /**
      * This method is used to get the default happiness level for a player.
      * The default happiness level is set to 1.0, indicating that a player starts the game at full happiness.
