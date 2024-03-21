@@ -32,15 +32,67 @@ public interface PlayerMetric {
      */
     String getLabel();
 
+    /**
+     * Returns the current value of the player metric.
+     *
+     * @return the current value of the player metric
+     */
     float get();
+
+    /**
+     * Sets the current value of the player metric.
+     *
+     * @param value the new value of the player metric
+     */
     void set(float value);
+
+    /**
+     * Increases the current value of the player metric by a specified amount.
+     *
+     * @param amount the amount to add to the current value of the player metric
+     */
     void increase(float amount);
+
+    /**
+     * Decreases the current value of the player metric by a specified amount.
+     *
+     * @param amount the amount to subtract from the current value of the player metric
+     */
     void decrease(float amount);
+
+    /**
+     * Returns the default value of the player metric.
+     *
+     * @return the default value of the player metric
+     */
     float getDefault();
 
+    /**
+     * Sets the total accumulated value of the player metric.
+     *
+     * @param total the new total accumulated value of the player metric
+     */
     void setTotal(float total);
+
+    /**
+     * Increases the total accumulated value of the player metric by a specified amount.
+     *
+     * @param amount the amount to add to the total accumulated value of the player metric
+     */
     void increaseTotal(float amount);
+
+    /**
+     * Returns the total accumulated value of the player metric.
+     *
+     * @return the total accumulated value of the player metric
+     */
     float getTotal();
+
+    /**
+     * Returns the maximum total accumulated value that a player can achieve.
+     *
+     * @return the maximum total accumulated value that a player can achieve
+     */
     float getMaxTotal();
 
     /**

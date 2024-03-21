@@ -68,18 +68,37 @@ public final class ActivityMapObject extends MapObject implements ActionMapObjec
      * @param object The MapObject to initialize the ActivityMapObject with.
      */
     public ActivityMapObject(@NotNull MapObject object) {
+        // Calls the superclass constructor
         super();
+
+        // Sets the name of the ActivityMapObject to the name of the given MapObject
         setName(object.getName());
+
+        // Sets the color of the ActivityMapObject to the color of the given MapObject
         setColor(object.getColor());
+
+        // Sets the opacity of the ActivityMapObject to the opacity of the given MapObject
         setOpacity(object.getOpacity());
+
+        // Sets the visibility of the ActivityMapObject to the visibility of the given MapObject
         setVisible(object.isVisible());
+
+        // Retrieves the properties of the given MapObject and assigns them to the properties of the ActivityMapObject
         properties = object.getProperties();
+
+        // Retrieves the "activityStr" property from the properties of the ActivityMapObject and assigns it to the str field
         str = properties.get("activityStr", String.class);
+
+        // Retrieves the "activityType" property from the properties of the ActivityMapObject, converts it to uppercase, and assigns it to the type field
         type = Activity.valueOf(properties.get("activityType", String.class).toUpperCase());
+
+        // Retrieves the "activityTime" property from the properties of the ActivityMapObject and assigns it to the time field
         time = properties.get("activityTime", Integer.class);
+
+        // Retrieves the "changeAmount" property from the properties of the ActivityMapObject, splits it into an array of strings, converts each string to a float, and collects them into an unmodifiable list
         changeAmounts = Arrays.stream(properties.get("changeAmount", String.class).split(","))
-                            .map(Float::parseFloat)
-                            .collect(Collectors.toUnmodifiableList());
+            .map(Float::parseFloat)
+            .collect(Collectors.toUnmodifiableList());
     }
 
     /**

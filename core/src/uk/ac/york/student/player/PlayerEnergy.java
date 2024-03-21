@@ -42,18 +42,39 @@ public class PlayerEnergy implements PlayerMetric {
      */
     private float totalEnergy = 0f;
 
+    /**
+     * Returns the maximum total energy that a player can accumulate.
+     * This is equivalent to the number of days in the game, as represented by {@link GameTime#getDays()}.
+     *
+     * @return the maximum total energy that a player can accumulate
+     */
     public float getMaxTotal() {
         return GameTime.getDays();
     }
 
+    /**
+     * Returns the total amount of energy accumulated by the player.
+     *
+     * @return the total amount of energy accumulated by the player
+     */
     public float getTotal() {
         return totalEnergy;
     }
 
+    /**
+     * Sets the total amount of energy accumulated by the player.
+     *
+     * @param total the new total amount of energy accumulated by the player
+     */
     public void setTotal(float total) {
         this.totalEnergy = total;
     }
 
+    /**
+     * Increases the total amount of energy accumulated by the player by a specified amount.
+     *
+     * @param amount the amount of energy to add to the total
+     */
     public void increaseTotal(float amount) {
         this.totalEnergy += amount;
     }

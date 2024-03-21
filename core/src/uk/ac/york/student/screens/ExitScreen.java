@@ -7,6 +7,7 @@ import lombok.Getter;
 import uk.ac.york.student.GdxGame;
 import uk.ac.york.student.assets.fonts.FontManager;
 
+@Deprecated(forRemoval = true)
 public class ExitScreen extends BaseScreen {
     @Getter
     private final Stage processor;

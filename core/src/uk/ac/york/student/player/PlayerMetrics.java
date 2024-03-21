@@ -51,8 +51,17 @@ public final class PlayerMetrics {
      */
     private final PlayerStudyLevel studyLevel = new PlayerStudyLevel();
 
-    public void changeMetric(@NotNull MetricType type, MetricEffect effect, float changeAmount) {
+    /**
+     * Changes the specified player metric based on the given effect and change amount.
+     *
+     * @param type The type of the player metric to change. This should be one of the values from the {@link MetricType} enum.
+     * @param effect The effect to apply to the player metric. This should be one of the values from the {@link MetricEffect} enum.
+     * @param changeAmount The amount by which to change the player metric. This is used when the effect is either {@link MetricEffect#INCREASE} or {@link MetricEffect#DECREASE}.
+     * @throws IllegalArgumentException If an invalid metric type or effect is provided.
+     */
+    public void changeMetric(@NotNull MetricType type, MetricEffect effect, float changeAmount) throws IllegalArgumentException {
         PlayerMetric metric;
+        // Determine the metric to change based on the provided type
         switch (type) {
             case ENERGY:
                 metric = energy;
@@ -67,6 +76,7 @@ public final class PlayerMetrics {
                 throw new IllegalArgumentException("Invalid metric type: " + type);
         }
 
+        // Apply the specified effect to the determined metric
         switch (effect) {
             case INCREASE:
                 metric.increase(changeAmount);
@@ -82,7 +92,14 @@ public final class PlayerMetrics {
         }
     }
 
-    public PlayerMetric getMetric(@NotNull MetricType type) {
+    /**
+     * Returns the player metric of the specified type.
+     *
+     * @param type The type of the player metric to return. This should be one of the values from the {@link MetricType} enum.
+     * @return The player metric of the specified type.
+     * @throws IllegalArgumentException If an invalid metric type is provided.
+     */
+    public PlayerMetric getMetric(@NotNull MetricType type) throws IllegalArgumentException {
         switch (type) {
             case ENERGY:
                 return energy;

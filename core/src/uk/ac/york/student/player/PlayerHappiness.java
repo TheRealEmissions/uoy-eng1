@@ -41,18 +41,39 @@ public class PlayerHappiness implements PlayerMetric {
      */
     private float totalHappiness = 0f;
 
+    /**
+     * Returns the maximum total happiness that a player can accumulate.
+     * This is equivalent to the number of days in the game, as represented by {@link GameTime#getDays()}.
+     *
+     * @return the maximum total happiness that a player can accumulate
+     */
     public float getMaxTotal() {
         return GameTime.getDays();
     }
 
+    /**
+     * Returns the total amount of happiness accumulated by the player.
+     *
+     * @return the total amount of happiness accumulated by the player
+     */
     public float getTotal() {
         return totalHappiness;
     }
 
+    /**
+     * Sets the total amount of happiness accumulated by the player.
+     *
+     * @param total the new total amount of happiness accumulated by the player
+     */
     public void setTotal(float total) {
         this.totalHappiness = total;
     }
 
+    /**
+     * Increases the total amount of happiness accumulated by the player by a specified amount.
+     *
+     * @param amount the amount of happiness to add to the total
+     */
     public void increaseTotal(float amount) {
         this.totalHappiness += amount;
     }
